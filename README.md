@@ -1,4 +1,4 @@
-# Tak-m91_FeyzaSa-man
+# TAKIM 91 FEYZA SAĞMAN
 
 Diğer GİTHUB Reposu: https://github.com/melismert805-ui/YZTA--Team-91  
 Ekip arkadaşlarım ile formu doldurduktan sonra iletişim kuramadım mesajlara dönüş almadım ve GİTHUB reposuna scrum master bizleri eklemediği için tek başıma bu repodan süreci tamamlayacağım.
