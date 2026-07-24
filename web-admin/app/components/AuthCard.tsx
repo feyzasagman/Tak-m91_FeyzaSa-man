@@ -1,14 +1,9 @@
 "use client";
 
-import Image from "next/image";
-
-export type AuthMode = "student" | "admin";
+import Link from "next/link";
 
 export function AuthCard({
-  mode,
   isRegister,
-  onModeChange,
-  onToggleRegister,
   email,
   password,
   passwordConfirm,
@@ -21,12 +16,8 @@ export function AuthCard({
   onPasswordConfirmChange,
   onSubmit,
   onForgotPassword,
-  onDemo,
 }: {
-  mode: AuthMode;
   isRegister: boolean;
-  onModeChange: (mode: AuthMode) => void;
-  onToggleRegister: () => void;
   email: string;
   password: string;
   passwordConfirm: string;
@@ -39,7 +30,6 @@ export function AuthCard({
   onPasswordConfirmChange: (value: string) => void;
   onSubmit: () => void;
   onForgotPassword: () => void;
-  onDemo: () => void;
 }) {
   return (
     <form
@@ -50,38 +40,13 @@ export function AuthCard({
       className="w-full max-w-[430px] rounded-[30px] border border-white/10 bg-white/[0.08] p-8 text-white shadow-2xl shadow-black/40 backdrop-blur-2xl"
     >
       <div className="mb-7 text-center">
-        <div className="mx-auto mb-4 flex size-[72px] items-center justify-center">
-          <Image
-            src="/logo.png"
-            alt="EventMint"
-            width={72}
-            height={72}
-            className="object-contain"
-            priority
-          />
+        <div className="mx-auto mb-4 flex size-[72px] items-center justify-center rounded-3xl bg-indigo-500 text-2xl font-bold shadow-lg shadow-indigo-500/25">
+          AI
         </div>
-        <h1 className="text-3xl font-semibold tracking-tight">EventMint</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">InternAI</h1>
         <p className="mt-2 text-sm text-slate-300">
-          {isRegister ? "Yeni hesap oluştur" : mode === "admin" ? "Yönetici girişi" : "Öğrenci girişi"}
+          {isRegister ? "Yeni hesap oluştur" : "Hesabına giriş yap"}
         </p>
-      </div>
-
-      <div className="mb-6 grid grid-cols-2 rounded-2xl border border-white/10 bg-slate-950/50 p-1">
-        {[
-          ["student", "Öğrenci"],
-          ["admin", "Yönetici"],
-        ].map(([value, label]) => (
-          <button
-            key={value}
-            type="button"
-            onClick={() => onModeChange(value as AuthMode)}
-            className={`rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
-              mode === value ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/20" : "text-slate-300 hover:text-white"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
       </div>
 
       <div className="space-y-4">
@@ -96,6 +61,8 @@ export function AuthCard({
             <input
               id="email"
               type="email"
+              autoComplete="email"
+              required
               value={email}
               onChange={(event) => onEmailChange(event.target.value)}
               placeholder="mail@example.com"
@@ -115,6 +82,8 @@ export function AuthCard({
             <input
               id="password"
               type="password"
+              autoComplete={isRegister ? "new-password" : "current-password"}
+              required
               value={password}
               onChange={(event) => onPasswordChange(event.target.value)}
               placeholder="••••••••"
@@ -135,6 +104,8 @@ export function AuthCard({
               <input
                 id="passwordConfirm"
                 type="password"
+                autoComplete="new-password"
+                required
                 value={passwordConfirm}
                 onChange={(event) => onPasswordConfirmChange(event.target.value)}
                 placeholder="••••••••"
@@ -178,23 +149,14 @@ export function AuthCard({
 
         <div className="text-center text-sm text-slate-300">
           {isRegister ? "Zaten hesabın var mı?" : "Hesabın yok mu?"}{" "}
-          <button
-            type="button"
-            onClick={onToggleRegister}
+          <Link
+            href={isRegister ? "/login" : "/register"}
             className="font-semibold text-indigo-200 transition hover:text-white"
           >
             {isRegister ? "Giriş Yap" : "Kayıt Ol"}
-          </button>
+          </Link>
         </div>
       </div>
-
-      <button
-        type="button"
-        onClick={onDemo}
-        className="mt-6 w-full text-center text-sm font-medium text-indigo-200 transition hover:text-white"
-      >
-        Demo olarak devam et
-      </button>
     </form>
   );
 }

@@ -2,19 +2,19 @@ import Link from "next/link";
 
 const features = [
   {
-    icon: "📅",
-    title: "Etkinlik Yönetimi",
-    text: "Etkinlikleri oluştur, listele ve hızlıca yönet.",
+    icon: "CV",
+    title: "Akıllı CV Analizi",
+    text: "CV'ni güçlü yönler ve gelişim alanları için analiz et.",
   },
   {
-    icon: "▦",
-    title: "QR Check-in",
-    text: "Canlı QR oturumlarıyla katılımı kolayca takip et.",
+    icon: "⌖",
+    title: "Şehir Bazlı Stajlar",
+    text: "Hedeflediğin şehirlerdeki staj fırsatlarını keşfet.",
   },
   {
-    icon: "★",
-    title: "Puan & Rozet",
-    text: "Katılımcı motivasyonunu puan ve rozetlerle güçlendir.",
+    icon: "AI",
+    title: "Başvuru Asistanı",
+    text: "Her ilana özel, kişiselleştirilmiş başvuru metinleri oluştur.",
   },
 ];
 
@@ -25,59 +25,81 @@ export default function Home() {
       <div className="absolute -left-28 top-16 size-80 rounded-full bg-violet-500/20 blur-3xl" />
       <div className="absolute -right-24 bottom-10 size-96 rounded-full bg-blue-500/10 blur-3xl" />
 
-      <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-[900px] flex-col justify-center">
-        <div className="mb-10 flex items-center gap-3">
-          <div className="flex size-12 items-center justify-center rounded-2xl bg-violet-500 text-lg font-bold shadow-lg shadow-violet-500/30">
-            E
+      <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-[1000px] flex-col">
+        <nav className="mb-12 flex items-center justify-between gap-4">
+          <Link href="/" className="flex items-center gap-3">
+            <span className="flex size-12 items-center justify-center rounded-2xl bg-violet-500 text-lg font-bold shadow-lg shadow-violet-500/30">
+              AI
+            </span>
+            <span>
+              <span className="block text-xl font-semibold tracking-tight">InternAI</span>
+              <span className="block text-xs font-medium uppercase tracking-[0.2em] text-violet-200/80">
+                Kariyer Platformu
+              </span>
+            </span>
+          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/internships"
+              className="hidden rounded-xl px-4 py-2 text-sm text-slate-300 transition hover:bg-white/10 hover:text-white sm:block"
+            >
+              Stajlar
+            </Link>
+            <Link
+              href="/dashboard"
+              className="hidden rounded-xl px-4 py-2 text-sm text-slate-300 transition hover:bg-white/10 hover:text-white sm:block"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/login"
+              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold transition hover:bg-white/10"
+            >
+              Giriş Yap
+            </Link>
           </div>
-          <div>
-            <p className="text-xl font-semibold tracking-tight">EventMint</p>
-            <p className="text-xs font-medium uppercase tracking-[0.28em] text-violet-200/80">
-              Web Admin
-            </p>
-          </div>
-        </div>
+        </nav>
 
+        <div className="flex flex-1 flex-col justify-center">
         <section className="mb-8 max-w-3xl">
           <h1 className="text-5xl font-semibold tracking-tight sm:text-6xl">
-            Admin Panel
+            InternAI
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-            Etkinlikleri yönet, QR check-in oturumu başlat, katılımı takip et.
+            Yapay zekâ destekli akıllı staj ve kariyer platformu
+          </p>
+          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-400">
+            Şehir bazlı staj ilanlarını keşfet, CV’ni analiz et ve her başvuru
+            için kişiselleştirilmiş başvuru metinleri oluştur.
           </p>
         </section>
 
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
           <section className="rounded-[28px] border border-white/10 bg-white/[0.08] p-6 shadow-2xl shadow-black/30 backdrop-blur-2xl">
             <p className="text-sm font-medium uppercase tracking-[0.24em] text-violet-200">
-              Hızlı Başlangıç
+              Kariyer Yolculuğun
             </p>
-            <h2 className="mt-3 text-2xl font-semibold">Paneline hızlıca geç</h2>
+            <h2 className="mt-3 text-2xl font-semibold">
+              Doğru stajı bul, daha güçlü başvur
+            </h2>
             <p className="mt-2 text-sm leading-6 text-slate-300">
-              Etkinlik listesini açabilir veya gerçek yönetici hesabınla giriş yapabilirsin.
+              InternAI ile fırsatlarını tek bir yerde yönetmeye hazırlan.
             </p>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
               <Link
-                href="/auth"
+                href="/internships"
                 className="rounded-2xl bg-violet-500 px-5 py-4 text-center text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 hover:bg-violet-400"
               >
-                Öğrenci Girişi
+                Stajları Keşfet
               </Link>
               <Link
-                href="/events"
+                href="/login"
                 className="rounded-2xl border border-white/15 bg-white/5 px-5 py-4 text-center text-sm font-semibold text-slate-100 transition hover:-translate-y-0.5 hover:bg-white/10"
               >
-                Admin Panel
+                Giriş Yap
               </Link>
             </div>
-
-            <Link
-              href="/events"
-              className="mt-5 inline-flex text-sm font-medium text-violet-200 transition hover:text-white"
-            >
-              Demo modda devam et →
-            </Link>
           </section>
 
           <section className="grid gap-3">
@@ -100,6 +122,7 @@ export default function Home() {
               </article>
             ))}
           </section>
+        </div>
         </div>
       </div>
     </main>

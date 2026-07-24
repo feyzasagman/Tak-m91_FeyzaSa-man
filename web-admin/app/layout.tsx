@@ -14,12 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EventMint",
-  description: "Kampüs etkinlikleri ve kulüp yönetimi platformu",
-  icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
-  },
+  title: "InternAI",
+  description:
+    "Şehir bazlı staj ilanları, yapay zekâ destekli CV analizi ve her ilana özel başvuru metinleri sunan akıllı staj platformu.",
 };
 
 export default function RootLayout({

@@ -3,12 +3,6 @@ web-admin/node_modules/
 web-admin/.next/
 web-admin/out/
 
-# Flutter / Dart
-mobile/.dart_tool/
-mobile/build/
-mobile/.flutter-plugins
-mobile/.flutter-plugins-dependencies
-
 # Env
 **/.env
 **/.env.local

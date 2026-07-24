@@ -28,7 +28,8 @@ export function isAdminPanelRole(role: AppRole): boolean {
 }
 
 export function postLoginPath(role: AppRole): string {
-  return isAdminPanelRole(role) ? "/events" : "/app/events";
+  void role;
+  return "/dashboard";
 }
 
 export function roleLabelTr(role: AppRole | string): string {
@@ -37,7 +38,7 @@ export function roleLabelTr(role: AppRole | string): string {
     case "admin":
       return "Admin";
     case "club_manager":
-      return "Kulüp Yöneticisi";
+      return "Yönetici";
     default:
       return "Öğrenci";
   }

@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (cancelled || record.banned !== true) return;
         await signOut(auth);
         if (!cancelled) {
-          router.replace("/auth?banned=1");
+          router.replace("/login?banned=1");
         }
       })
       .catch(() => {
