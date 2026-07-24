@@ -16,6 +16,17 @@ export default async function ResumeAnalysisPage({
         id: internship.id,
         company: internship.company,
         title: internship.title,
+        skills: internship.skills,
+        description: [
+          internship.description,
+          ...internship.responsibilities.map((item) => `• ${item}`),
+          ...internship.requirements.map((item) => `• ${item}`),
+        ].join("\n"),
+        city: internship.city,
+        workModel: internship.workModel,
+        internshipType: internship.internshipType,
+        deadline: internship.deadline,
+        compatibilityScore: internship.compatibilityScore,
       }
     : null;
 

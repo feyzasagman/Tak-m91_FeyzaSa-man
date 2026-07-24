@@ -8,28 +8,24 @@ export function AuthCard({
   password,
   passwordConfirm,
   loading,
-  resettingPassword,
   error,
-  success,
+  showLoginSuggestion,
   onEmailChange,
   onPasswordChange,
   onPasswordConfirmChange,
   onSubmit,
-  onForgotPassword,
 }: {
   isRegister: boolean;
   email: string;
   password: string;
   passwordConfirm: string;
   loading: boolean;
-  resettingPassword?: boolean;
   error?: string | null;
-  success?: string | null;
+  showLoginSuggestion?: boolean;
   onEmailChange: (value: string) => void;
   onPasswordChange: (value: string) => void;
   onPasswordConfirmChange: (value: string) => void;
   onSubmit: () => void;
-  onForgotPassword: () => void;
 }) {
   return (
     <form
@@ -52,7 +48,7 @@ export function AuthCard({
       <div className="space-y-4">
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-200" htmlFor="email">
-            Email
+            E-posta
           </label>
           <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/50 px-4 transition focus-within:border-indigo-400 focus-within:shadow-[0_0_0_4px_rgba(99,102,241,0.18)]">
             <span className="text-slate-400" aria-hidden>
@@ -63,6 +59,7 @@ export function AuthCard({
               type="email"
               autoComplete="email"
               required
+              disabled={loading}
               value={email}
               onChange={(event) => onEmailChange(event.target.value)}
               placeholder="mail@example.com"
@@ -73,7 +70,7 @@ export function AuthCard({
 
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-200" htmlFor="password">
-            Password
+            Şifre
           </label>
           <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/50 px-4 transition focus-within:border-indigo-400 focus-within:shadow-[0_0_0_4px_rgba(99,102,241,0.18)]">
             <span className="text-slate-400" aria-hidden>
@@ -84,6 +81,8 @@ export function AuthCard({
               type="password"
               autoComplete={isRegister ? "new-password" : "current-password"}
               required
+              minLength={isRegister ? 6 : undefined}
+              disabled={loading}
               value={password}
               onChange={(event) => onPasswordChange(event.target.value)}
               placeholder="••••••••"
@@ -95,7 +94,7 @@ export function AuthCard({
         {isRegister && (
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-200" htmlFor="passwordConfirm">
-              Password (tekrar)
+              Şifre (tekrar)
             </label>
             <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/50 px-4 transition focus-within:border-indigo-400 focus-within:shadow-[0_0_0_4px_rgba(99,102,241,0.18)]">
               <span className="text-slate-400" aria-hidden>
@@ -106,6 +105,8 @@ export function AuthCard({
                 type="password"
                 autoComplete="new-password"
                 required
+                minLength={6}
+                disabled={loading}
                 value={passwordConfirm}
                 onChange={(event) => onPasswordConfirmChange(event.target.value)}
                 placeholder="••••••••"
@@ -115,27 +116,30 @@ export function AuthCard({
           </div>
         )}
 
-        {success && (
-          <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
-            {success}
-          </div>
-        )}
-
         {error && (
-          <div className="rounded-2xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100">
-            {error}
+          <div role="alert" className="rounded-2xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+            <p>{error}</p>
+            {showLoginSuggestion && (
+              <div className="mt-3 border-t border-red-300/20 pt-3">
+                <p>Zaten hesabınız varsa giriş yapın.</p>
+                <Link
+                  href="/login"
+                  className="mt-2 inline-flex min-h-10 items-center justify-center rounded-xl bg-white/10 px-4 font-semibold text-white transition hover:bg-white/20"
+                >
+                  Giriş Yap
+                </Link>
+              </div>
+            )}
           </div>
         )}
 
         {!isRegister && (
-          <button
-            type="button"
-            onClick={onForgotPassword}
-            disabled={loading || resettingPassword}
-            className="text-left text-sm font-medium text-indigo-200 transition hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+          <Link
+            href="/forgot-password"
+            className="inline-block text-sm font-medium text-indigo-200 transition hover:text-white"
           >
-            {resettingPassword ? "Gönderiliyor..." : "Şifremi unuttum"}
-          </button>
+            Şifremi Unuttum
+          </Link>
         )}
 
         <button

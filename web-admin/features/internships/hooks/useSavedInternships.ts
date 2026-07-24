@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useMemo, useSyncExternalStore } from "react";
+import { CLIENT_STORAGE_KEYS } from "@/lib/storage-keys";
 
-const STORAGE_KEY = "internai.saved-internships";
 const CHANGE_EVENT = "internai:saved-internships-change";
 
 function getSnapshot() {
-  return window.localStorage.getItem(STORAGE_KEY) ?? "[]";
+  return window.localStorage.getItem(CLIENT_STORAGE_KEYS.savedInternships) ?? "[]";
 }
 
 function getServerSnapshot() {
@@ -26,7 +26,7 @@ function parseSavedIds(value: string) {
 
 function subscribe(callback: () => void) {
   const handleStorage = (event: StorageEvent) => {
-    if (event.key === STORAGE_KEY) callback();
+    if (event.key === CLIENT_STORAGE_KEYS.savedInternships) callback();
   };
   window.addEventListener("storage", handleStorage);
   window.addEventListener(CHANGE_EVENT, callback);
@@ -45,12 +45,21 @@ export function useSavedInternships() {
   const savedIds = useMemo(() => parseSavedIds(serializedIds), [serializedIds]);
 
   const toggleSaved = useCallback((internshipId: string) => {
-    const current = parseSavedIds(getSnapshot());
-    const next = current.includes(internshipId)
-      ? current.filter((id) => id !== internshipId)
-      : [...current, internshipId];
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    window.dispatchEvent(new Event(CHANGE_EVENT));
+    try {
+      const current = parseSavedIds(getSnapshot());
+      const removing = current.includes(internshipId);
+      const next = removing
+        ? current.filter((id) => id !== internshipId)
+        : [...current, internshipId];
+      window.localStorage.setItem(
+        CLIENT_STORAGE_KEYS.savedInternships,
+        JSON.stringify(next)
+      );
+      window.dispatchEvent(new Event(CHANGE_EVENT));
+      return removing ? "removed" : "saved";
+    } catch {
+      return "storage-error";
+    }
   }, []);
 
   const isSaved = useCallback(

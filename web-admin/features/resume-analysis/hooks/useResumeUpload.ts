@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { CLIENT_STORAGE_KEYS } from "@/lib/storage-keys";
 import { mockResumeAnalysis } from "../data/mockResumeAnalysis";
 import type {
   ResumeAnalysisResult,
@@ -87,6 +88,18 @@ export function useResumeUpload() {
         timerRef.current = setTimeout(resolve, MOCK_ANALYSIS_DELAY_MS);
       });
       timerRef.current = null;
+      window.localStorage.setItem(
+        CLIENT_STORAGE_KEYS.resumeAnalysisContext,
+        JSON.stringify({
+          detectedSkills: mockResumeAnalysis.detectedSkills.map((skill) => skill.name),
+          strengths: mockResumeAnalysis.strengths,
+          summary: mockResumeAnalysis.summary,
+          experienceSummary:
+            "Yazılım geliştirme ve veri analizi odaklı proje deneyimi.",
+          projectSummary:
+            "Yapay zekâ, web geliştirme ve veri analizi projeleri.",
+        })
+      );
       setResult(mockResumeAnalysis);
       setStatus("complete");
     } catch {

@@ -4,19 +4,17 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db } from "../../lib/firebase";
-import { getUserRecord, isUserBanned } from "../../lib/guard";
-import { postLoginPath, normalizeAppRole } from "../../lib/role";
+import { isUserBanned } from "../../lib/guard";
+import {
+  getFirebaseAuthErrorCode,
+  getFirebaseAuthErrorMessage,
+} from "../../lib/firebase/auth-errors";
 import { AuthCard } from "./AuthCard";
-
-function getErrorMessage(error: unknown) {
-  return error instanceof Error ? error.message : "Beklenmeyen bir hata oluştu.";
-}
 
 export function AuthForm({ isRegister }: { isRegister: boolean }) {
   const router = useRouter();
@@ -25,9 +23,8 @@ export function AuthForm({ isRegister }: { isRegister: boolean }) {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [loading, setLoading] = useState(false);
-  const [resettingPassword, setResettingPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
 
   const ensureUserDocument = async (uid: string, userEmail: string) => {
     const userRef = doc(db, "users", uid);
@@ -43,26 +40,33 @@ export function AuthForm({ isRegister }: { isRegister: boolean }) {
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
+    if (loading) return;
     setError(null);
-    setSuccess(null);
+    setErrorCode(null);
 
-    try {
-      if (!email || !password) {
-        setError("E-posta ve şifre gerekli.");
+    if (!email.trim() || !password) {
+      setError("E-posta ve şifre gerekli.");
+      return;
+    }
+
+    if (isRegister) {
+      if (password.length < 6) {
+        setError("Şifreniz en az 6 karakter olmalıdır.");
         return;
       }
+      if (!passwordConfirm) {
+        setError("Şifre tekrarı gerekli.");
+        return;
+      }
+      if (password !== passwordConfirm) {
+        setError("Şifreler eşleşmiyor.");
+        return;
+      }
+    }
 
+    setLoading(true);
+    try {
       if (isRegister) {
-        if (!passwordConfirm) {
-          setError("Şifre tekrarı gerekli.");
-          return;
-        }
-        if (password !== passwordConfirm) {
-          setError("Şifreler eşleşmiyor.");
-          return;
-        }
-
         const credential = await createUserWithEmailAndPassword(auth, email, password);
         await setDoc(doc(db, "users", credential.user.uid), {
           email,
@@ -76,7 +80,7 @@ export function AuthForm({ isRegister }: { isRegister: boolean }) {
           router.replace("/login?banned=1");
           return;
         }
-        router.push("/dashboard");
+        router.replace("/dashboard");
         return;
       }
 
@@ -88,31 +92,12 @@ export function AuthForm({ isRegister }: { isRegister: boolean }) {
         return;
       }
 
-      const record = await getUserRecord(credential.user.uid);
-      router.push(postLoginPath(normalizeAppRole(record.role)));
+      router.replace("/dashboard");
     } catch (submitError: unknown) {
-      setError(getErrorMessage(submitError));
+      setErrorCode(getFirebaseAuthErrorCode(submitError));
+      setError(getFirebaseAuthErrorMessage(submitError));
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleForgotPassword = async () => {
-    setError(null);
-    setSuccess(null);
-    if (!email) {
-      setError("Şifre sıfırlamak için önce e-posta adresini gir.");
-      return;
-    }
-
-    setResettingPassword(true);
-    try {
-      await sendPasswordResetEmail(auth, email);
-      setSuccess("Şifre sıfırlama e-postası gönderildi.");
-    } catch (resetError: unknown) {
-      setError(getErrorMessage(resetError));
-    } finally {
-      setResettingPassword(false);
     }
   };
 
@@ -133,14 +118,14 @@ export function AuthForm({ isRegister }: { isRegister: boolean }) {
           password={password}
           passwordConfirm={passwordConfirm}
           loading={loading}
-          resettingPassword={resettingPassword}
           error={error}
-          success={success}
+          showLoginSuggestion={
+            isRegister && errorCode === "auth/email-already-in-use"
+          }
           onEmailChange={setEmail}
           onPasswordChange={setPassword}
           onPasswordConfirmChange={setPasswordConfirm}
           onSubmit={handleSubmit}
-          onForgotPassword={handleForgotPassword}
         />
       </div>
     </main>

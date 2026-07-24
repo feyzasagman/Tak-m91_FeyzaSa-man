@@ -45,8 +45,9 @@ export interface ResumeAnalysisResult {
   internshipCompatibility: InternshipCompatibilityResult;
 }
 
-export interface ResumeTargetInternship {
-  id: string;
-  company: string;
-  title: string;
-}
+export type {
+  ResumeAnalysis,
+  ResumeAnalysisHistoryItem,
+  ResumeAnalysisStatus,
+  ResumeTargetInternship,
+} from "./resumeAnalysis";

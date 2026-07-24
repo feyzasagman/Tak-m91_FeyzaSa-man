@@ -1,11 +1,12 @@
 import { Card } from "@/app/components/ui/card";
+import type { ResumeScore as ResumeScoreType } from "../types/resumeAnalysis";
 
 export function ResumeScore({
   score,
-  summary,
+  subtitle,
 }: {
-  score: number;
-  summary: string;
+  score: ResumeScoreType;
+  subtitle?: string;
 }) {
   return (
     <Card className="p-6">
@@ -13,20 +14,23 @@ export function ResumeScore({
         <div
           className="relative flex size-32 shrink-0 items-center justify-center rounded-full p-2"
           style={{
-            background: `conic-gradient(var(--brand) ${score}%, var(--surface2) 0)`,
+            background: `conic-gradient(var(--brand) ${score.value}%, var(--surface2) 0)`,
           }}
+          aria-label={`Genel uyum skoru ${score.value} üzeri 100`}
         >
           <div className="flex size-full flex-col items-center justify-center rounded-full bg-surface">
-            <strong className="text-3xl">{score}</strong>
+            <strong className="text-3xl">{score.value}</strong>
             <span className="text-xs text-text2">/ 100</span>
           </div>
         </div>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
-            Genel değerlendirme
+            Genel uyum skoru
           </p>
-          <h2 className="mt-2 text-2xl font-semibold">CV Skoru: {score} / 100</h2>
-          <p className="mt-3 text-sm leading-7 text-text2">{summary}</p>
+          <h2 className="mt-2 text-2xl font-semibold">{score.label}</h2>
+          {subtitle && (
+            <p className="mt-3 text-sm leading-7 text-text2">{subtitle}</p>
+          )}
         </div>
       </div>
     </Card>

@@ -4,6 +4,7 @@ import type { Internship } from "../types";
 import { formatInternshipDate } from "../utils/internship-utils";
 import { CompatibilityScore } from "./CompatibilityScore";
 import { InternshipBadge } from "./InternshipBadge";
+import { ApplicationAddButton } from "./ApplicationAddButton";
 
 export function InternshipCard({
   internship,
@@ -70,7 +71,7 @@ export function InternshipCard({
         </div>
       </div>
 
-      <div className="mt-auto grid grid-cols-[1fr_auto] gap-2 pt-5">
+      <div className="mt-auto grid gap-2 pt-5">
         <Link
           href={`/internships/${internship.id}`}
           className="ui-button ui-button-brand"
@@ -78,14 +79,17 @@ export function InternshipCard({
         >
           Detayları Gör
         </Link>
-        <button
-          type="button"
-          onClick={() => onToggleSaved(internship.id)}
-          className="ui-button ui-button-secondary px-3"
-          aria-label={saved ? "İlanı kayıtlardan çıkar" : "İlanı kaydet"}
-        >
-          {saved ? "Kaydedildi" : "Kaydet"}
-        </button>
+        <div className="grid grid-cols-2 gap-2">
+          <ApplicationAddButton internship={internship} compact />
+          <button
+            type="button"
+            onClick={() => onToggleSaved(internship.id)}
+            className="ui-button ui-button-secondary px-3"
+            aria-label={saved ? "İlanı kayıtlardan çıkar" : "İlanı kaydet"}
+          >
+            {saved ? "Kaydedildi" : "Kaydet"}
+          </button>
+        </div>
       </div>
     </Card>
   );

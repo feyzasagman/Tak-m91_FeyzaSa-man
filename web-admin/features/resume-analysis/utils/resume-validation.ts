@@ -12,11 +12,11 @@ export function validateResumeFile(file: ResumeValidationFile): string | null {
     file.type === "application/pdf" || file.type === "application/x-pdf";
 
   if (!hasPdfExtension || !hasPdfMimeType) {
-    return "Lütfen yalnızca PDF formatında bir CV yükleyin.";
+    return "Yalnızca PDF formatındaki CV dosyaları desteklenmektedir.";
   }
 
   if (file.size > MAX_RESUME_SIZE_BYTES) {
-    return "CV dosyası 5 MB’dan büyük olamaz.";
+    return "CV dosyası en fazla 5 MB olabilir.";
   }
 
   if (file.size === 0) {

@@ -1,12 +1,11 @@
-"use client";
-
 import Link from "next/link";
 import { SectionCard } from "@/app/components/ui/section-card";
 import type { Internship } from "../types";
-import { useSavedInternships } from "../hooks/useSavedInternships";
-import { formatInternshipDate } from "../utils/internship-utils";
-import { CompatibilityScore } from "./CompatibilityScore";
+import { InternshipActionPanel } from "./InternshipActionPanel";
 import { InternshipBadge } from "./InternshipBadge";
+import { InternshipCompatibilityPanel } from "./InternshipCompatibilityPanel";
+import { InternshipMetadata } from "./InternshipMetadata";
+import { SavedInternshipButton } from "./SavedInternshipButton";
 
 function DetailList({ items }: { items: string[] }) {
   return (
@@ -22,9 +21,6 @@ function DetailList({ items }: { items: string[] }) {
 }
 
 export function InternshipDetails({ internship }: { internship: Internship }) {
-  const { isSaved, toggleSaved } = useSavedInternships();
-  const saved = isSaved(internship.id);
-
   return (
     <section className="space-y-6">
       <Link href="/internships" className="text-sm font-medium text-text2 hover:text-text">
@@ -41,25 +37,11 @@ export function InternshipDetails({ internship }: { internship: Internship }) {
             <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
               {internship.title}
             </h1>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <InternshipBadge>{internship.city}</InternshipBadge>
-              <InternshipBadge>{internship.workModel}</InternshipBadge>
-              <InternshipBadge tone="brand">{internship.internshipType}</InternshipBadge>
-              <InternshipBadge>{internship.category}</InternshipBadge>
-            </div>
-            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-text2">
-              <span>Son başvuru: {formatInternshipDate(internship.deadline)}</span>
-              <span>Yayınlanma: {formatInternshipDate(internship.publishedAt)}</span>
+            <div className="mt-4">
+              <InternshipMetadata internship={internship} />
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => toggleSaved(internship.id)}
-            aria-pressed={saved}
-            className="ui-button ui-button-secondary"
-          >
-            {saved ? "★ İlan Kaydedildi" : "☆ İlanı Kaydet"}
-          </button>
+          <SavedInternshipButton internshipId={internship.id} />
         </div>
       </div>
 
@@ -90,50 +72,9 @@ export function InternshipDetails({ internship }: { internship: Internship }) {
           </SectionCard>
         </div>
 
-        <div className="space-y-5">
-          <SectionCard title="AI uyum değerlendirmesi">
-            <CompatibilityScore score={internship.compatibilityScore} />
-            <div className="mt-5">
-              <h3 className="text-sm font-semibold text-emerald-300">Uyumlu güçlü yönler</h3>
-              <div className="mt-3">
-                <DetailList items={internship.matchingStrengths} />
-              </div>
-            </div>
-            <div className="mt-5">
-              <h3 className="text-sm font-semibold text-amber-300">Eksik yetkinlikler</h3>
-              <div className="mt-3">
-                <DetailList items={internship.missingSkills} />
-              </div>
-            </div>
-          </SectionCard>
-
-          <SectionCard title="Başvuru araçları">
-            <div className="grid gap-3">
-              <Link
-                href={`/ai-assistant?internshipId=${internship.id}`}
-                className="ui-button ui-button-brand"
-              >
-                Başvuru Hazırla
-              </Link>
-              <Link
-                href={`/resume-analysis?internshipId=${internship.id}`}
-                className="ui-button ui-button-secondary"
-              >
-                CV Uyumunu Analiz Et
-              </Link>
-              <button
-                type="button"
-                onClick={() => toggleSaved(internship.id)}
-                className="ui-button ui-button-secondary"
-                aria-label={saved ? "İlanı kayıtlardan çıkar" : "İlanı kaydet"}
-              >
-                {saved ? "Kaydı Kaldır" : "İlanı Kaydet"}
-              </button>
-              <Link href="/internships" className="ui-button ui-button-secondary">
-                Listeye Dön
-              </Link>
-            </div>
-          </SectionCard>
+        <div className="space-y-5 xl:sticky xl:top-24">
+          <InternshipCompatibilityPanel internship={internship} />
+          <InternshipActionPanel internship={internship} />
         </div>
       </div>
     </section>
