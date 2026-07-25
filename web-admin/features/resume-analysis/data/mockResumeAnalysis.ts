@@ -1,6 +1,6 @@
-import type { ResumeAnalysisResult } from "../types";
+import type { LegacyMockResumeAnalysisResult } from "../types";
 
-export const mockResumeAnalysis: ResumeAnalysisResult = {
+export const mockResumeAnalysis: LegacyMockResumeAnalysisResult = {
   score: 78,
   summary:
     "CV’n güçlü bir teknik altyapı sunuyor ancak deneyimlerin ve başarıların daha ölçülebilir biçimde ifade edilebilir.",

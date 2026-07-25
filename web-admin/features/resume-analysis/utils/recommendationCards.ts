@@ -1,21 +1,12 @@
-import type {
-  ResumeAnalysis,
-  ResumeRecommendation,
-} from "../types/resumeAnalysis";
+import type { PriorityRecommendation } from "../types/resumeAnalysis";
 
+/** Eski öneri kartı bileşeni ile uyum için dönüştürücü. */
 export function toRecommendationCards(
-  analysis: ResumeAnalysis
-): ResumeRecommendation[] {
-  return [
-    ...analysis.sectionsToStrengthen.slice(0, 3).map((title) => ({
-      title,
-      detail: "Bu bölümü ilan gereksinimleriyle daha uyumlu hale getir.",
-      priority: "high" as const,
-    })),
-    ...analysis.suggestedKeywords.slice(0, 3).map((item) => ({
-      title: item.keyword,
-      detail: item.reason,
-      priority: "medium" as const,
-    })),
-  ];
+  items: PriorityRecommendation[]
+): Array<{ title: string; detail: string; priority: PriorityRecommendation["priority"] }> {
+  return items.map((item) => ({
+    title: item.title,
+    detail: item.description,
+    priority: item.priority,
+  }));
 }

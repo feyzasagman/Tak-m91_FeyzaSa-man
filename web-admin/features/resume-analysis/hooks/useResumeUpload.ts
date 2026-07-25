@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CLIENT_STORAGE_KEYS } from "@/lib/storage-keys";
 import { mockResumeAnalysis } from "../data/mockResumeAnalysis";
 import type {
-  ResumeAnalysisResult,
+  LegacyMockResumeAnalysisResult,
   ResumeFile,
   ResumeUploadStatus,
 } from "../types";
@@ -17,7 +17,9 @@ export function useResumeUpload() {
   const [file, setFile] = useState<ResumeFile | null>(null);
   const [status, setStatus] = useState<ResumeUploadStatus>("idle");
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<ResumeAnalysisResult | null>(null);
+  const [result, setResult] = useState<LegacyMockResumeAnalysisResult | null>(
+    null
+  );
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clearTimer = useCallback(() => {

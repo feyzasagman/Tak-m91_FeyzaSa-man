@@ -1,58 +1,54 @@
-export type ResumeAnalysisVerdict = "applicable" | "improve-first";
+export const ANALYSIS_VERSION = "1.0";
+export const MIN_RESUME_ANALYSIS_TEXT_LENGTH = 200;
+export const MAX_RESUME_ANALYSIS_TEXT_LENGTH = 20_000;
 
-export interface ResumeScore {
-  value: number;
+export type ApplicationRecommendation = "apply" | "improve_first" | "low_match";
+
+export type AnalysisPriority = "high" | "medium" | "low";
+
+export interface ResumeSectionScoreItem {
+  section: string;
   label: string;
+  score: number;
+  feedback: string;
 }
 
-export interface ATSScore {
-  value: number;
-  label: string;
-}
-
-export interface SkillMatchResult {
-  matching: string[];
-  missing: string[];
-  extra: string[];
-}
-
-export interface KeywordSuggestion {
-  keyword: string;
-  reason: string;
-}
-
-export interface ResumeRecommendation {
+export interface PriorityRecommendation {
+  priority: AnalysisPriority;
   title: string;
-  detail: string;
-  priority: "high" | "medium" | "low";
+  description: string;
 }
 
-export interface ResumeAnalysisComparison {
-  cvHighlights: string[];
-  jobHighlights: string[];
-  matching: string[];
-  missing: string[];
-  extra: string[];
+export interface InternshipCompatibilityResult {
+  score: number;
+  matchedRequirements: string[];
+  missingRequirements: string[];
+  applicationAdvice: string;
 }
 
-export interface ResumeAnalysis {
-  overallScore: ResumeScore;
-  atsScore: ATSScore;
+export interface ResumeAnalysisMetadata {
+  model: string;
+  createdAt: string;
+  analysisVersion: string;
+}
+
+export interface ResumeAnalysisResult {
+  overallScore: number;
+  atsScore: number;
+  applicationRecommendation: ApplicationRecommendation;
+  summary: string;
   strengths: string[];
-  gaps: string[];
-  matchingSkills: string[];
+  weaknesses: string[];
+  matchedSkills: string[];
   missingSkills: string[];
-  oversizedAreas: string[];
-  sectionsToStrengthen: string[];
-  suggestedKeywords: KeywordSuggestion[];
-  technologiesToAdd: string[];
-  commentary: string;
-  verdict: ResumeAnalysisVerdict;
-  comparison: ResumeAnalysisComparison;
-  skillMatch: SkillMatchResult;
+  keywordSuggestions: string[];
+  sectionScores: ResumeSectionScoreItem[];
+  priorityRecommendations: PriorityRecommendation[];
+  internshipCompatibility: InternshipCompatibilityResult | null;
+  metadata: ResumeAnalysisMetadata;
 }
 
-export interface ResumeAnalysisInternshipInput {
+export interface ResumeAnalysisInternshipContext {
   id: string;
   company: string;
   title: string;
@@ -64,23 +60,15 @@ export interface ResumeAnalysisInternshipInput {
 
 export interface ResumeAnalysisRequest {
   resumeText: string;
+  internshipId?: string;
+  internshipContext?: ResumeAnalysisInternshipContext;
+  detectedSkills?: string[];
+  sections?: Record<string, string>;
   fileName?: string;
-  internship: ResumeAnalysisInternshipInput;
-}
-
-export interface ResumeAnalysisMetadata {
-  model: string;
-  createdAt: string;
 }
 
 export type ResumeAnalysisApiResponse =
-  | {
-      success: true;
-      data: {
-        analysis: ResumeAnalysis;
-        metadata: ResumeAnalysisMetadata;
-      };
-    }
+  | { success: true; data: ResumeAnalysisResult }
   | {
       success: false;
       error: {
@@ -88,25 +76,25 @@ export type ResumeAnalysisApiResponse =
           | "VALIDATION_ERROR"
           | "RATE_LIMITED"
           | "AI_ERROR"
-          | "CONFIGURATION_ERROR";
+          | "CONFIGURATION_ERROR"
+          | "NOT_FOUND";
         message: string;
       };
     };
 
 export interface ResumeAnalysisHistoryItem {
   id: string;
-  createdAt: string;
   fileName: string;
-  internshipId: string;
+  internshipId: string | null;
   company: string;
   position: string;
   overallScore: number;
   atsScore: number;
-  verdict: ResumeAnalysisVerdict;
-  analysis: ResumeAnalysis;
+  createdAt: string;
+  fullResult: ResumeAnalysisResult;
 }
 
-export type ResumeAnalysisStatus =
+export type ResumeAnalysisProgress =
   | "idle"
   | "analyzing"
   | "complete"
@@ -125,3 +113,13 @@ export interface ResumeTargetInternship {
   deadline: string;
   compatibilityScore: number | null;
 }
+
+export const APPLICATION_RECOMMENDATION_COPY: Record<
+  ApplicationRecommendation,
+  string
+> = {
+  apply: "Bu ilana başvurmak için CV’n yeterli uyuma sahip.",
+  improve_first:
+    "Başvuru öncesinde CV’de bazı önemli geliştirmeler öneriliyor.",
+  low_match: "Bu ilanla mevcut CV arasında düşük uyum tespit edildi.",
+};

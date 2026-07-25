@@ -1,4 +1,4 @@
-import type { ResumeRecommendation as AnalysisRecommendation } from "../types/resumeAnalysis";
+import type { PriorityRecommendation } from "../types/resumeAnalysis";
 
 const priorityLabel = {
   high: "Yüksek",
@@ -9,7 +9,11 @@ const priorityLabel = {
 export function ResumeRecommendation({
   recommendations,
 }: {
-  recommendations: AnalysisRecommendation[];
+  recommendations: Array<{
+    title: string;
+    detail: string;
+    priority: PriorityRecommendation["priority"];
+  }>;
 }) {
   return (
     <div className="ui-card p-5">

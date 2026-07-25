@@ -1,6 +1,6 @@
 import { SectionCard } from "@/app/components/ui/section-card";
 import type {
-  InternshipCompatibilityResult,
+  LegacyInternshipCompatibilityResult,
   ResumeTargetInternship,
 } from "../types";
 import { SkillBadgeList } from "./SkillBadgeList";
@@ -10,7 +10,7 @@ export function InternshipCompatibility({
   result,
 }: {
   internship: ResumeTargetInternship;
-  result: InternshipCompatibilityResult;
+  result: LegacyInternshipCompatibilityResult;
 }) {
   return (
     <SectionCard

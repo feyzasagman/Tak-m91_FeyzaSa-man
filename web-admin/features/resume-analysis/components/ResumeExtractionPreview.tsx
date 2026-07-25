@@ -115,8 +115,8 @@ export function ResumeExtractionPreview({
           className="rounded-2xl border border-success/30 bg-success/10 px-4 py-4"
         >
           <p className="text-sm font-semibold text-success">
-            CV bağlamı hazır. Gerçek yapay zekâ analizi için ilan seçiliyse
-            aşağıdaki butonu kullanabilirsin.
+            CV bağlamı hazır. Aşağıdaki butonla Gemini destekli AI analizini
+            başlatabilirsin.
           </p>
           {wasTruncated && (
             <p className="mt-2 text-xs leading-5 text-text2">
@@ -148,19 +148,17 @@ export function ResumeExtractionPreview({
               {isAnalyzing ? "Analiz ediliyor..." : "AI Analizini Başlat"}
             </button>
             {analysisBlockedReason && (
-              <p className="text-sm text-amber-200">
-                {analysisBlockedReason}{" "}
-                <Link href="/internships" className="font-semibold text-brand hover:underline">
-                  Staj ilanlarını gör
-                </Link>
-              </p>
+              <p className="text-sm text-amber-200">{analysisBlockedReason}</p>
             )}
           </>
         )}
 
         <p className="text-xs leading-5 text-text2">
-          Önce CV bağlamını kaydet, ardından seçili staj ilanı ile Gemini
-          analizini başlat.
+          Geçerli CV metni çıkarıldıktan sonra analizi başlatabilirsin. İlan
+          seçiliyse CV ve ilan birlikte değerlendirilir.{" "}
+          <Link href="/internships" className="font-semibold text-brand hover:underline">
+            Staj ilanlarını gör
+          </Link>
         </p>
       </div>
     </div>

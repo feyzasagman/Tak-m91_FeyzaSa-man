@@ -1,93 +1,133 @@
 import type {
-  ResumeAnalysis,
+  ApplicationRecommendation,
   ResumeAnalysisRequest,
+  ResumeAnalysisResult,
 } from "../types/resumeAnalysis";
+import { ANALYSIS_VERSION } from "../types/resumeAnalysis";
 
 export function createMockResumeAnalysis(
   input: ResumeAnalysisRequest
-): ResumeAnalysis {
+): ResumeAnalysisResult {
   const resumeLower = input.resumeText.toLocaleLowerCase("tr-TR");
-  const matchingSkills = input.internship.skills.filter((skill) =>
+  const jobSkills = input.internshipContext?.skills ?? [];
+  const matchedSkills = jobSkills.filter((skill) =>
     resumeLower.includes(skill.toLocaleLowerCase("tr-TR"))
   );
-  const missingSkills = input.internship.skills.filter(
-    (skill) => !matchingSkills.includes(skill)
+  const missingSkills = jobSkills.filter(
+    (skill) => !matchedSkills.includes(skill)
   );
-  const ratio = input.internship.skills.length
-    ? matchingSkills.length / input.internship.skills.length
-    : 0.5;
-  const overall = Math.round(55 + ratio * 40);
-  const ats = Math.round(50 + ratio * 45);
-  const verdict = overall >= 75 && missingSkills.length <= 2
-    ? "applicable"
-    : "improve-first";
+  const detected = input.detectedSkills ?? [];
+  const ratio = jobSkills.length
+    ? matchedSkills.length / jobSkills.length
+    : Math.min(0.85, 0.45 + detected.length * 0.04);
+  const overallScore = Math.round(55 + ratio * 40);
+  const atsScore = Math.round(50 + ratio * 45);
+
+  let applicationRecommendation: ApplicationRecommendation = "improve_first";
+  if (overallScore >= 78 && missingSkills.length <= 2) {
+    applicationRecommendation = "apply";
+  } else if (overallScore < 55 || missingSkills.length >= 5) {
+    applicationRecommendation = "low_match";
+  }
+
+  const company = input.internshipContext?.company;
+  const title = input.internshipContext?.title;
 
   return {
-    overallScore: {
-      value: overall,
-      label: `${input.internship.company} ilanı ile genel uyum`,
-    },
-    atsScore: {
-      value: ats,
-      label: "ATS geçme tahmini",
-    },
+    overallScore,
+    atsScore,
+    applicationRecommendation,
+    summary: company
+      ? `${company} – ${title} ilanı için CV’n tahmini olarak ${overallScore}/100 genel uyum ve %${atsScore} ATS skoru gösteriyor. Bu skorlar yapay zekâ destekli tahminlerdir.`
+      : `CV’n genel olarak ${overallScore}/100 kalite ve %${atsScore} ATS tahmini gösteriyor. Bu skorlar yapay zekâ destekli tahminlerdir; kesin işe alım sonucu garantisi vermez.`,
     strengths: [
-      "CV'de teknik beceriler ve proje deneyimi görünür biçimde yer alıyor.",
-      `${input.internship.title} ilanıyla örtüşen anahtar kelimeler tespit edildi.`,
-      "Eğitim ve deneyim bölümleri okunabilir bir yapıda.",
+      "CV’de eğitim ve teknik beceriler okunabilir biçimde yer alıyor.",
+      detected.length
+        ? `Algılanan beceriler arasında ${detected.slice(0, 3).join(", ")} öne çıkıyor.`
+        : "Proje ve deneyim maddeleri yapılandırılmış görünüyor.",
+      "Bölüm başlıkları ATS taraması için yeterince net.",
     ],
-    gaps: [
+    weaknesses: [
       missingSkills.length
-        ? `İlanda öne çıkan ${missingSkills.slice(0, 3).join(", ")} becerileri CV'de zayıf veya eksik.`
-        : "İlanla kritik beceri boşluğu sınırlı görünüyor.",
-      "Deneyim maddelerinde ölçülebilir sonuçlar daha belirgin hale getirilebilir.",
-      "ATS uyumu için anahtar kelime yoğunluğu dengeli dağıtılmalı.",
+        ? `İlanda öne çıkan ${missingSkills.slice(0, 3).join(", ")} becerileri CV’de zayıf veya eksik.`
+        : "Deneyim maddelerinde ölçülebilir sonuçlar daha belirgin hale getirilebilir.",
+      "Anahtar kelime yoğunluğu bazı bölümlerde dengeli dağıtılmalı.",
+      "Özet bölümü hedef role daha odaklı yazılabilir.",
     ],
-    matchingSkills,
+    matchedSkills: matchedSkills.length
+      ? matchedSkills
+      : detected.slice(0, 6),
     missingSkills,
-    oversizedAreas: [
-      "Genel özet veya uzun paragraf blokları",
-      "İlanla düşük ilişkili yan beceriler",
+    keywordSuggestions: [
+      ...(missingSkills.length
+        ? missingSkills.slice(0, 3)
+        : ["staj", "ekip çalışması"]),
+      "problem çözme",
+      "versiyon kontrolü",
+    ].slice(0, 8),
+    sectionScores: [
+      {
+        section: "education",
+        label: "Eğitim",
+        score: Math.min(92, overallScore + 6),
+        feedback: "Eğitim bilgileri anlaşılır; ilgili ders veya not ortalaması eklenebilir.",
+      },
+      {
+        section: "experience",
+        label: "Deneyim",
+        score: Math.max(40, overallScore - 4),
+        feedback: "Deneyim maddelerini ölçülebilir etki ile güçlendir.",
+      },
+      {
+        section: "skills",
+        label: "Beceriler",
+        score: Math.round(50 + ratio * 45),
+        feedback: "Teknik becerileri ilan diline yakın anahtar kelimelerle grupla.",
+      },
+      {
+        section: "projects",
+        label: "Projeler",
+        score: Math.max(45, overallScore - 8),
+        feedback: "Projelerde kullanılan teknolojileri ve sonucu net yaz.",
+      },
     ],
-    sectionsToStrengthen: ["Deneyimler", "Teknik Beceriler", "Projeler"],
-    suggestedKeywords: [
+    priorityRecommendations: [
       {
-        keyword: input.internship.skills[0] ?? "staj",
-        reason: "İlan başlığındaki temel yetkinlikle doğrudan ilişkili.",
+        priority: "high",
+        title: "İlan odaklı anahtar kelimeler",
+        description:
+          "Eksik görünen becerileri yalnızca gerçek deneyimin varsa ilgili bölümlere ekle.",
       },
       {
-        keyword: "ekip çalışması",
-        reason: "Staj ilanlarında sık aranan davranışsal anahtar kelime.",
+        priority: "medium",
+        title: "Ölçülebilir başarılar",
+        description:
+          "Deneyim maddelerine sayı, süre veya etki içeren sonuçlar ekle.",
       },
       {
-        keyword: "problem çözme",
-        reason: "Teknik staj başvurularında ATS taramasında sık geçer.",
+        priority: "low",
+        title: "Özet paragrafını sadeleştir",
+        description:
+          "Üst özeti hedef staj rolüne göre 3–4 cümlede netleştir.",
       },
     ],
-    technologiesToAdd: missingSkills.slice(0, 5),
-    commentary: `${input.internship.company} bünyesindeki ${input.internship.title} ilanı için CV'n genel olarak ${overall}/100 uyum gösteriyor. Mevcut güçlü yönlerin başvuru sürecinde avantaj sağlarken, eksik görünen becerilerin yalnızca gerçek deneyimin varsa CV'de daha görünür hale getirilmesi önerilir.\n\nATS açısından skor yaklaşık %${ats}. Anahtar kelime yerleşimi ve bölüm düzeni iyileştirilirse tarama aşamasında daha tutarlı bir görünürlük elde edilebilir.\n\nSonuç olarak ${
-      verdict === "applicable"
-        ? "mevcut CV ile başvuruya geçilebilir; yine de son bir düzenleme turu faydalı olur."
-        : "önce CV'ni ilan odaklı güçlendirmen daha doğru bir adım olur."
-    }`,
-    verdict,
-    comparison: {
-      cvHighlights: [
-        input.fileName ? `${input.fileName} üzerinden çıkarılan CV metni` : "CV metni",
-        "Tespit edilen teknik ve proje vurguları",
-      ],
-      jobHighlights: [
-        `${input.internship.company} – ${input.internship.title}`,
-        input.internship.skills.slice(0, 5).join(", ") || "İlan becerileri",
-      ],
-      matching: matchingSkills,
-      missing: missingSkills,
-      extra: ["Genel akademik bilgiler", "İlan dışı yan beceriler"].filter(Boolean),
-    },
-    skillMatch: {
-      matching: matchingSkills,
-      missing: missingSkills,
-      extra: ["Genel akademik bilgiler"],
+    internshipCompatibility: input.internshipContext
+      ? {
+          score: overallScore,
+          matchedRequirements: matchedSkills,
+          missingRequirements: missingSkills,
+          applicationAdvice:
+            applicationRecommendation === "apply"
+              ? "Mevcut CV ile başvuruya geçilebilir; son bir düzenleme turu faydalı olur."
+              : applicationRecommendation === "low_match"
+                ? "Önce kritik eksikleri kapatman veya daha uyumlu ilanlara yönelmen önerilir."
+                : "Başvuru öncesi CV’yi ilan gereksinimlerine göre güçlendirmen önerilir.",
+        }
+      : null,
+    metadata: {
+      model: "mock-development",
+      createdAt: new Date().toISOString(),
+      analysisVersion: ANALYSIS_VERSION,
     },
   };
 }

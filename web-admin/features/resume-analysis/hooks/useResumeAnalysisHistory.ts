@@ -3,13 +3,14 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { CLIENT_STORAGE_KEYS } from "@/lib/storage-keys";
 import type {
-  ResumeAnalysis,
+  ApplicationRecommendation,
   ResumeAnalysisHistoryItem,
-  ResumeAnalysisVerdict,
+  ResumeAnalysisResult,
 } from "../types/resumeAnalysis";
+import { APPLICATION_RECOMMENDATION_COPY } from "../types/resumeAnalysis";
 
 const CHANGE_EVENT = "internai:resume-analysis-history-change";
-const MAX_HISTORY_ITEMS = 20;
+const MAX_HISTORY_ITEMS = 10;
 
 function getSnapshot() {
   return (
@@ -36,10 +37,13 @@ function isHistoryItem(value: unknown): value is ResumeAnalysisHistoryItem {
   return (
     typeof item.id === "string" &&
     typeof item.createdAt === "string" &&
+    typeof item.fileName === "string" &&
     typeof item.company === "string" &&
     typeof item.position === "string" &&
     typeof item.overallScore === "number" &&
-    item.analysis !== undefined
+    typeof item.atsScore === "number" &&
+    item.fullResult !== undefined &&
+    typeof item.fullResult === "object"
   );
 }
 
@@ -71,10 +75,10 @@ export function useResumeAnalysisHistory() {
   const add = useCallback(
     (input: {
       fileName: string;
-      internshipId: string;
+      internshipId: string | null;
       company: string;
       position: string;
-      analysis: ResumeAnalysis;
+      fullResult: ResumeAnalysisResult;
     }) => {
       const id = crypto.randomUUID();
       const createdAt = new Date().toISOString();
@@ -85,12 +89,11 @@ export function useResumeAnalysisHistory() {
         internshipId: input.internshipId,
         company: input.company,
         position: input.position,
-        overallScore: input.analysis.overallScore.value,
-        atsScore: input.analysis.atsScore.value,
-        verdict: input.analysis.verdict,
-        analysis: input.analysis,
+        overallScore: input.fullResult.overallScore,
+        atsScore: input.fullResult.atsScore,
+        fullResult: input.fullResult,
       };
-      persist([entry, ...parse(getSnapshot())]);
+      persist([entry, ...parse(getSnapshot())].slice(0, MAX_HISTORY_ITEMS));
       return id;
     },
     []
@@ -100,16 +103,16 @@ export function useResumeAnalysisHistory() {
     persist(parse(getSnapshot()).filter((item) => item.id !== id));
   }, []);
 
-  const getById = useCallback(
+  const load = useCallback(
     (id: string) => items.find((item) => item.id === id) ?? null,
     [items]
   );
 
-  return { items, add, remove, getById };
+  return { items, add, remove, load, getById: load };
 }
 
-export function verdictLabel(verdict: ResumeAnalysisVerdict) {
-  return verdict === "applicable"
-    ? "Başvurulabilir"
-    : "Önce CV geliştirilmeli";
+export function recommendationLabel(
+  value: ApplicationRecommendation
+): string {
+  return APPLICATION_RECOMMENDATION_COPY[value];
 }

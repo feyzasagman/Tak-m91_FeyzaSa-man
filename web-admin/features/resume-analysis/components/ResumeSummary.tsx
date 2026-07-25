@@ -1,25 +1,19 @@
-import type { ResumeAnalysis } from "../types/resumeAnalysis";
-import { verdictLabel } from "../hooks/useResumeAnalysisHistory";
+import type { ResumeAnalysisResult } from "../types/resumeAnalysis";
+import { APPLICATION_RECOMMENDATION_COPY } from "../types/resumeAnalysis";
 
-export function ResumeSummary({ analysis }: { analysis: ResumeAnalysis }) {
+export function ResumeSummary({ analysis }: { analysis: ResumeAnalysisResult }) {
   const metrics = [
-    { label: "Uyum", value: `${analysis.overallScore.value}` },
-    { label: "ATS", value: `${analysis.atsScore.value}%` },
+    { label: "Uyum", value: `${analysis.overallScore}` },
+    { label: "ATS", value: `${analysis.atsScore}%` },
+    { label: "Eşleşen", value: String(analysis.matchedSkills.length) },
+    { label: "Eksik", value: String(analysis.missingSkills.length) },
     {
-      label: "Eşleşen",
-      value: String(analysis.matchingSkills.length),
-    },
-    {
-      label: "Eksik",
-      value: String(analysis.missingSkills.length),
-    },
-    {
-      label: "Güçlendir",
-      value: String(analysis.sectionsToStrengthen.length),
+      label: "Öneri",
+      value: String(analysis.priorityRecommendations.length),
     },
     {
       label: "Anahtar",
-      value: String(analysis.suggestedKeywords.length),
+      value: String(analysis.keywordSuggestions.length),
     },
   ];
 
@@ -35,14 +29,8 @@ export function ResumeSummary({ analysis }: { analysis: ResumeAnalysis }) {
           </div>
         ))}
       </div>
-      <div
-        className={`rounded-2xl border px-4 py-4 text-sm font-semibold ${
-          analysis.verdict === "applicable"
-            ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
-            : "border-amber-500/30 bg-amber-500/10 text-amber-200"
-        }`}
-      >
-        Sonuç: {verdictLabel(analysis.verdict)}
+      <div className="rounded-2xl border border-brand/25 bg-brand/10 px-4 py-4 text-sm font-semibold text-brand">
+        {APPLICATION_RECOMMENDATION_COPY[analysis.applicationRecommendation]}
       </div>
     </div>
   );

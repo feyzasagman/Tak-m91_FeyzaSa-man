@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   MAX_ANALYZE_REQUEST_BODY_LENGTH,
   parseAnalyzeResumeRequest,
-  parseResumeAnalysisResponse,
-  resumeAnalysisResponseJsonSchema,
-} from "@/features/resume-analysis/schemas/resumeAnalysisResponseSchema";
+  parseResumeAnalysisResult,
+  resumeAnalysisJsonSchema,
+} from "@/features/resume-analysis/schemas/resumeAnalysisSchema";
 import {
   buildResumeAnalysisPrompt,
   RESUME_ANALYSIS_SYSTEM_INSTRUCTION,
@@ -23,7 +23,12 @@ export const maxDuration = 45;
 
 function errorResponse(
   status: number,
-  code: "VALIDATION_ERROR" | "RATE_LIMITED" | "AI_ERROR" | "CONFIGURATION_ERROR",
+  code:
+    | "VALIDATION_ERROR"
+    | "RATE_LIMITED"
+    | "AI_ERROR"
+    | "CONFIGURATION_ERROR"
+    | "NOT_FOUND",
   message: string,
   headers?: HeadersInit
 ) {
@@ -45,7 +50,7 @@ function safeDevelopmentLog(startedAt: number, statusCode: number) {
 export async function POST(request: NextRequest) {
   const startedAt = Date.now();
   const rateLimit = checkRateLimit(request, {
-    namespace: "resume-analysis",
+    namespace: "resume-analyze",
     maxRequests: 5,
   });
   if (!rateLimit.allowed) {
@@ -97,26 +102,34 @@ export async function POST(request: NextRequest) {
   }
 
   const input = parsed.data;
+
+  if (
+    input.internshipId &&
+    input.internshipContext &&
+    input.internshipId !== input.internshipContext.id
+  ) {
+    safeDevelopmentLog(startedAt, 400);
+    return errorResponse(
+      400,
+      "VALIDATION_ERROR",
+      "İlan kimliği ile ilan bağlamı uyuşmuyor."
+    );
+  }
+
   if (!hasGeminiApiKey()) {
     if (process.env.NODE_ENV !== "development") {
       safeDevelopmentLog(startedAt, 503);
       return errorResponse(
         503,
         "CONFIGURATION_ERROR",
-        "AI servisi şu anda yapılandırılmamış."
+        "AI servisi şu anda yapılandırılmamış. GEMINI_API_KEY ortam değişkenini kontrol edin."
       );
     }
-    const analysis = createMockResumeAnalysis(input);
+    const data = createMockResumeAnalysis(input);
     safeDevelopmentLog(startedAt, 200);
     return NextResponse.json<ResumeAnalysisApiResponse>({
       success: true,
-      data: {
-        analysis,
-        metadata: {
-          model: "mock-development",
-          createdAt: new Date().toISOString(),
-        },
-      },
+      data,
     });
   }
 
@@ -129,23 +142,29 @@ export async function POST(request: NextRequest) {
         temperature: 0.4,
         maxOutputTokens: 3_072,
         responseMimeType: "application/json",
-        responseSchema: resumeAnalysisResponseJsonSchema,
+        responseSchema: resumeAnalysisJsonSchema,
       },
     });
+
     const content = response.text?.trim() ?? "";
-    const analysis = parseResumeAnalysisResponse(content);
-    if (!analysis) throw new Error("Invalid structured resume analysis");
+    const data = parseResumeAnalysisResult(content, GEMINI_MODEL);
+    if (!data) {
+      safeDevelopmentLog(startedAt, 502);
+      return errorResponse(
+        502,
+        "AI_ERROR",
+        "CV analizi doğrulanamadı. Lütfen daha sonra tekrar deneyin."
+      );
+    }
+
+    if (!input.internshipContext) {
+      data.internshipCompatibility = null;
+    }
 
     safeDevelopmentLog(startedAt, 200);
     return NextResponse.json<ResumeAnalysisApiResponse>({
       success: true,
-      data: {
-        analysis,
-        metadata: {
-          model: GEMINI_MODEL,
-          createdAt: new Date().toISOString(),
-        },
-      },
+      data,
     });
   } catch {
     safeDevelopmentLog(startedAt, 502);

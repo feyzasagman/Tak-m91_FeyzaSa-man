@@ -7,13 +7,19 @@ import { PageHeader } from "@/app/components/layout/PageHeader";
 import { Card } from "@/app/components/ui/card";
 import { useApplications } from "@/features/applications/hooks/useApplications";
 import { useResumeAnalysis } from "../hooks/useResumeAnalysis";
-import { useResumeAnalysisHistory } from "../hooks/useResumeAnalysisHistory";
 import { useResumeExtraction } from "../hooks/useResumeExtraction";
-import type { ResumeTargetInternship } from "../types/resumeAnalysis";
+import {
+  MAX_RESUME_ANALYSIS_TEXT_LENGTH,
+  MIN_RESUME_ANALYSIS_TEXT_LENGTH,
+  type ResumeTargetInternship,
+} from "../types/resumeAnalysis";
+import { detectTechnicalSkills } from "../utils/detectTechnicalSkills";
 import {
   createResumeContext,
   saveResumeContext,
 } from "../utils/resumeContextStorage";
+import { ResumeAnalysisError } from "./ResumeAnalysisError";
+import { ResumeAnalysisLoading } from "./ResumeAnalysisLoading";
 import { ResumeAnalysisReport } from "./ResumeAnalysisReport";
 import { ResumeExtractionError } from "./ResumeExtractionError";
 import { ResumeExtractionLoading } from "./ResumeExtractionLoading";
@@ -33,7 +39,6 @@ export function ResumeAnalysisWorkspace({
 }) {
   const router = useRouter();
   const applications = useApplications();
-  const history = useResumeAnalysisHistory();
   const {
     file,
     uploadError,
@@ -50,15 +55,16 @@ export function ResumeAnalysisWorkspace({
     resetExtraction,
   } = useResumeExtraction();
   const {
-    status: analysisStatus,
-    analysis,
-    metadata,
-    error: analysisError,
+    analysisProgress,
+    analysisResult,
+    analysisError,
     isAnalyzing,
-    runAnalysis,
-    cancel: cancelAnalysis,
-    reset: resetAnalysis,
-    loadAnalysis,
+    analysisHistory,
+    analyzeResume,
+    cancelAnalysis,
+    clearAnalysis,
+    removeHistoryItem,
+    loadResult,
   } = useResumeAnalysis();
 
   const [isContextReady, setIsContextReady] = useState(false);
@@ -92,55 +98,76 @@ export function ResumeAnalysisWorkspace({
   }, []);
 
   const prepareAiContext = () => {
-    if (!extractionResult || !editedText.trim()) return;
+    if (!extractionResult || !editedText.trim()) return false;
     const context = createResumeContext(extractionResult, editedText);
     if (!saveResumeContext(context)) {
       clearReadyState();
       setContextError(
         "CV bağlamı tarayıcıya kaydedilemedi. Depolama alanını kontrol edip tekrar deneyin."
       );
-      return;
+      return false;
     }
     setContextError(null);
     setWasTruncated(context.wasTruncated);
     setIsContextReady(true);
     showToast("CV metniniz kaydedildi ve AI analizi için hazırlandı.");
+    return true;
   };
 
-  const analysisBlockedReason = !targetInternship
-    ? "AI CV analizi için bir staj ilanı seçmelisin."
-    : !isContextReady
-      ? "Önce CV bağlamını kaydet."
-      : null;
+  const trimmedLength = editedText.trim().length;
+  const canAnalyze =
+    Boolean(extractionResult) &&
+    trimmedLength >= MIN_RESUME_ANALYSIS_TEXT_LENGTH &&
+    trimmedLength <= MAX_RESUME_ANALYSIS_TEXT_LENGTH &&
+    !isAnalyzing;
+
+  const analysisBlockedReason = !extractionResult
+    ? "Önce CV metnini çıkar."
+    : trimmedLength < MIN_RESUME_ANALYSIS_TEXT_LENGTH
+      ? "CV metni analiz için çok kısa. En az 200 karakter gerekli."
+      : trimmedLength > MAX_RESUME_ANALYSIS_TEXT_LENGTH
+        ? "CV metni analiz için çok uzun. En fazla 20.000 karakter gönderilebilir."
+        : null;
 
   const startAnalysis = async () => {
-    if (!targetInternship || !editedText.trim() || !isContextReady) return;
-    const result = await runAnalysis({
-      resumeText: editedText,
-      fileName: extractionResult?.fileName,
-      internship: {
-        id: targetInternship.id,
-        company: targetInternship.company,
-        title: targetInternship.title,
-        description: targetInternship.description,
-        skills: targetInternship.skills,
-        city: targetInternship.city,
-        workModel: targetInternship.workModel,
+    if (!canAnalyze || !extractionResult) return;
+    if (!isContextReady) {
+      const saved = prepareAiContext();
+      if (!saved) return;
+    }
+
+    const result = await analyzeResume(
+      {
+        resumeText: editedText.trim(),
+        fileName: extractionResult.fileName,
+        internshipId: targetInternship?.id,
+        internshipContext: targetInternship
+          ? {
+              id: targetInternship.id,
+              company: targetInternship.company,
+              title: targetInternship.title,
+              description: targetInternship.description,
+              skills: targetInternship.skills,
+              city: targetInternship.city,
+              workModel: targetInternship.workModel,
+            }
+          : undefined,
+        detectedSkills: detectTechnicalSkills(editedText.trim()),
+        sections: { ...extractionResult.sections },
       },
-    });
-    if (!result) return;
-    history.add({
-      fileName: extractionResult?.fileName ?? "CV",
-      internshipId: targetInternship.id,
-      company: targetInternship.company,
-      position: targetInternship.title,
-      analysis: result.analysis,
-    });
-    showToast("AI CV analizi tamamlandı ve geçmişe kaydedildi.");
+      {
+        fileName: extractionResult.fileName,
+        company: targetInternship?.company ?? "Genel CV analizi",
+        position: targetInternship?.title ?? "İlan seçilmedi",
+      }
+    );
+    if (result) {
+      showToast("AI CV analizi tamamlandı ve geçmişe kaydedildi.");
+    }
   };
 
   const createApplication = () => {
-    if (!targetInternship || !analysis) {
+    if (!targetInternship || !analysisResult) {
       router.push("/app/applications");
       return;
     }
@@ -148,16 +175,20 @@ export function ResumeAnalysisWorkspace({
       internshipId: targetInternship.id,
       company: {
         name: targetInternship.company,
-        initials: targetInternship.company.slice(0, 2).toLocaleUpperCase("tr-TR"),
+        initials: targetInternship.company
+          .slice(0, 2)
+          .toLocaleUpperCase("tr-TR"),
       },
       position: targetInternship.title,
       city: targetInternship.city,
       workModel: targetInternship.workModel,
       internshipType: targetInternship.internshipType,
-      compatibilityScore: analysis.overallScore.value,
+      compatibilityScore:
+        analysisResult.internshipCompatibility?.score ??
+        analysisResult.overallScore,
       deadline: targetInternship.deadline,
-      matchingSkills: analysis.matchingSkills,
-      missingSkills: analysis.missingSkills,
+      matchingSkills: analysisResult.matchedSkills,
+      missingSkills: analysisResult.missingSkills,
     });
     if (outcome === "duplicate") {
       showToast("Bu ilan zaten başvurularında kayıtlı.");
@@ -170,7 +201,7 @@ export function ResumeAnalysisWorkspace({
     router.push("/app/applications");
   };
 
-  const showReport = analysisStatus === "complete" && analysis;
+  const showReport = analysisProgress === "complete" && analysisResult;
 
   return (
     <section className="space-y-7">
@@ -186,13 +217,13 @@ export function ResumeAnalysisWorkspace({
       <PageHeader
         eyebrow="Kariyer profilin"
         title="AI CV Analizi"
-        description="CV metnini çıkar, bağlamı kaydet ve seçili staj ilanı ile Gemini destekli ATS uyum raporu oluştur."
+        description="PDF’den çıkarılan gerçek CV metnini Gemini ile analiz et; isteğe bağlı olarak seçili staj ilanı ile ATS uyum raporu oluştur."
       />
 
       {targetInternship ? (
         <Card className="border-brand/25 bg-brand/10 p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-            Bu CV şu ilan için analiz edilecek
+            Seçili staj ilanı
           </p>
           <p className="mt-2 font-semibold">
             {targetInternship.company} – {targetInternship.title}
@@ -209,59 +240,35 @@ export function ResumeAnalysisWorkspace({
           </div>
         </Card>
       ) : (
-        <p className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
-          AI CV analizi için bir staj ilanı seçmelisin.{" "}
+        <p className="rounded-2xl border border-border bg-surface2/40 px-4 py-3 text-sm text-text2">
+          İlan seçmeden genel CV analizi yapabilirsin. İlan odaklı uyum için{" "}
           <Link href="/internships" className="font-semibold text-brand hover:underline">
-            Staj ilanlarına git
-          </Link>
+            staj ilanlarından
+          </Link>{" "}
+          bir ilan seç.
           {requestedInternshipId ? " (seçilen ilan bulunamadı)" : null}
         </p>
       )}
 
       <p className="rounded-2xl border border-brand/20 bg-brand/5 px-4 py-3 text-sm leading-6 text-text2">
-        CV’niz yalnızca analiz amacıyla işlenir ve bu aşamada sunucuda kalıcı
-        olarak saklanmaz. Analiz geçmişi yalnızca bu tarayıcıda tutulur.
+        CV’niz yalnızca analiz amacıyla işlenir ve sunucuda kalıcı olarak
+        saklanmaz. Analiz geçmişi yalnızca bu tarayıcıda tutulur.
       </p>
 
       {isAnalyzing ? (
-        <div className="space-y-4">
-          <ResumeExtractionLoading
-            onCancel={cancelAnalysis}
-            title="AI CV analizi hazırlanıyor"
-            description="Gemini, CV metnini seçili staj ilanı ile birlikte değerlendiriyor."
-          />
-        </div>
+        <ResumeAnalysisLoading onCancel={cancelAnalysis} />
       ) : showReport ? (
         <div className="space-y-6">
           <ResumeAnalysisReport
-            analysis={analysis}
+            analysis={analysisResult}
             internshipId={targetInternship?.id}
-            modelLabel={metadata?.model}
             onCreateApplication={createApplication}
+            onAnalyzeNew={() => {
+              clearAnalysis();
+              resetExtraction();
+              clearReadyState();
+            }}
           />
-          <div className="flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() => {
-                resetAnalysis();
-                showToast("Yeni bir analiz için CV bağlamını koruyabilirsin.");
-              }}
-              className="ui-button ui-button-secondary"
-            >
-              Analize Dön
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                resetAnalysis();
-                resetExtraction();
-                clearReadyState();
-              }}
-              className="ui-button ui-button-secondary"
-            >
-              Yeni CV Yükle
-            </button>
-          </div>
         </div>
       ) : isExtracting ? (
         <ResumeExtractionLoading onCancel={cancelExtraction} />
@@ -272,20 +279,22 @@ export function ResumeAnalysisWorkspace({
             editedText={editedText}
             isContextReady={isContextReady}
             wasTruncated={wasTruncated}
-            canAnalyze={Boolean(targetInternship) && isContextReady}
+            canAnalyze={canAnalyze}
             isAnalyzing={isAnalyzing}
             analysisBlockedReason={analysisBlockedReason}
             onTextChange={(value) => {
               setEditedText(value);
               clearReadyState();
-              resetAnalysis();
+              clearAnalysis();
             }}
-            onContinue={prepareAiContext}
+            onContinue={() => {
+              prepareAiContext();
+            }}
             onStartAnalysis={startAnalysis}
           />
           {contextError && <ResumeExtractionError message={contextError} />}
           {analysisError && (
-            <ResumeExtractionError
+            <ResumeAnalysisError
               message={analysisError}
               onRetry={startAnalysis}
             />
@@ -294,7 +303,7 @@ export function ResumeAnalysisWorkspace({
             type="button"
             onClick={() => {
               resetExtraction();
-              resetAnalysis();
+              clearAnalysis();
               clearReadyState();
               setToast("");
               clearToastTimer();
@@ -349,15 +358,12 @@ export function ResumeAnalysisWorkspace({
       )}
 
       <ResumeHistory
-        items={history.items}
+        items={analysisHistory}
         onOpen={(item) => {
-          loadAnalysis(item.analysis, {
-            model: "history",
-            createdAt: item.createdAt,
-          });
+          loadResult(item.fullResult);
           showToast("Geçmiş analiz açıldı.");
         }}
-        onDelete={history.remove}
+        onDelete={removeHistoryItem}
       />
     </section>
   );

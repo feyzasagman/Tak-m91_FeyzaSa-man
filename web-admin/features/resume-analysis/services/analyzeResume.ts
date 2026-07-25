@@ -1,8 +1,7 @@
 import type {
-  ResumeAnalysis,
   ResumeAnalysisApiResponse,
-  ResumeAnalysisMetadata,
   ResumeAnalysisRequest,
+  ResumeAnalysisResult,
 } from "../types/resumeAnalysis";
 
 const REQUEST_TIMEOUT_MS = 45_000;
@@ -15,6 +14,7 @@ export class ResumeAnalysisRequestError extends Error {
       | "RATE_LIMITED"
       | "AI_ERROR"
       | "CONFIGURATION_ERROR"
+      | "NOT_FOUND"
       | "TIMEOUT"
       | "CANCELLED"
   ) {
@@ -28,7 +28,13 @@ function isApiResponse(value: unknown): value is ResumeAnalysisApiResponse {
   const candidate = value as Record<string, unknown>;
   if (candidate.success === true) {
     const data = candidate.data as Record<string, unknown> | undefined;
-    return Boolean(data && data.analysis && typeof data.analysis === "object");
+    return Boolean(
+      data &&
+        typeof data.overallScore === "number" &&
+        typeof data.atsScore === "number" &&
+        typeof data.summary === "string" &&
+        typeof data.applicationRecommendation === "string"
+    );
   }
   if (candidate.success === false) {
     const error = candidate.error as Record<string, unknown> | undefined;
@@ -44,7 +50,7 @@ function isApiResponse(value: unknown): value is ResumeAnalysisApiResponse {
 export async function analyzeResume(
   input: ResumeAnalysisRequest,
   externalSignal?: AbortSignal
-): Promise<{ analysis: ResumeAnalysis; metadata: ResumeAnalysisMetadata }> {
+): Promise<ResumeAnalysisResult> {
   const controller = new AbortController();
   let timedOut = false;
   const timeoutId = window.setTimeout(() => {
@@ -55,12 +61,13 @@ export async function analyzeResume(
   externalSignal?.addEventListener("abort", cancelFromExternal, { once: true });
 
   try {
-    const response = await fetch("/api/ai/analyze-resume", {
+    const response = await fetch("/api/resume/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       signal: controller.signal,
       body: JSON.stringify(input),
     });
+
     let payload: unknown;
     try {
       payload = await response.json();
@@ -70,18 +77,21 @@ export async function analyzeResume(
         "AI_ERROR"
       );
     }
+
     if (!isApiResponse(payload)) {
       throw new ResumeAnalysisRequestError(
         "CV analiz yanıtı doğrulanamadı.",
         "AI_ERROR"
       );
     }
+
     if (!payload.success) {
       throw new ResumeAnalysisRequestError(
         payload.error.message,
         payload.error.code
       );
     }
+
     return payload.data;
   } catch (error) {
     if (error instanceof ResumeAnalysisRequestError) throw error;

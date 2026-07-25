@@ -1,4 +1,4 @@
-import type { ResumeRecommendation } from "../types";
+import type { LegacyResumeRecommendation } from "../types";
 
 const priorityStyles = {
   Yüksek: "border-red-500/30 bg-red-500/10 text-red-200",
@@ -9,7 +9,7 @@ const priorityStyles = {
 export function RecommendationCard({
   recommendation,
 }: {
-  recommendation: ResumeRecommendation;
+  recommendation: LegacyResumeRecommendation;
 }) {
   return (
     <article className="rounded-2xl border border-border bg-surface2 p-4">

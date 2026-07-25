@@ -20,20 +20,21 @@ export interface ResumeSectionScore {
 
 export type RecommendationPriority = "Yüksek" | "Orta" | "Düşük";
 
-export interface ResumeRecommendation {
+export interface LegacyResumeRecommendation {
   id: string;
   priority: RecommendationPriority;
   text: string;
 }
 
-export interface InternshipCompatibilityResult {
+export interface LegacyInternshipCompatibilityResult {
   score: number;
   matchingSkills: string[];
   missingSkills: string[];
   suggestion: string;
 }
 
-export interface ResumeAnalysisResult {
+/** Eski mock yükleme akışı için (useResumeUpload). */
+export interface LegacyMockResumeAnalysisResult {
   score: number;
   summary: string;
   strengths: string[];
@@ -41,13 +42,14 @@ export interface ResumeAnalysisResult {
   detectedSkills: ResumeSkill[];
   suggestedSkills: ResumeSkill[];
   sectionScores: ResumeSectionScore[];
-  recommendations: ResumeRecommendation[];
-  internshipCompatibility: InternshipCompatibilityResult;
+  recommendations: LegacyResumeRecommendation[];
+  internshipCompatibility: LegacyInternshipCompatibilityResult;
 }
 
 export type {
-  ResumeAnalysis,
+  ApplicationRecommendation,
   ResumeAnalysisHistoryItem,
-  ResumeAnalysisStatus,
+  ResumeAnalysisProgress,
+  ResumeAnalysisResult,
   ResumeTargetInternship,
 } from "./resumeAnalysis";
