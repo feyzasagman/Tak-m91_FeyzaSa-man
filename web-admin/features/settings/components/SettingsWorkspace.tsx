@@ -26,18 +26,21 @@ export function SettingsWorkspace() {
       />
 
       <div className="grid gap-5 lg:grid-cols-2">
-        <SectionCard title="Hesap ayarları" description="Bilgiler yalnızca arayüz önizlemesidir.">
+        <SectionCard
+          title="Hesap ayarları"
+          description="Profil kaydı bir sonraki sürümde etkinleştirilecek."
+        >
           <div className="space-y-4">
             <label className="block">
               <span className="mb-2 block text-sm font-medium">Ad soyad</span>
-              <Input placeholder="Ad soyad" disabled />
+              <Input placeholder="Ad soyad" disabled aria-disabled="true" />
             </label>
             <label className="block">
               <span className="mb-2 block text-sm font-medium">Hedef şehir</span>
-              <Input placeholder="Şehir tercihi" disabled />
+              <Input placeholder="Şehir tercihi" disabled aria-disabled="true" />
             </label>
             <button type="button" disabled className="ui-button ui-button-brand">
-              Kaydetme yakında
+              Kaydet (yakında)
             </button>
           </div>
         </SectionCard>

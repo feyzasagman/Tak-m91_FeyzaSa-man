@@ -56,9 +56,9 @@ export function Sidebar({
       </nav>
 
       <div className="rounded-2xl border border-brand/20 bg-brand/10 p-4">
-        <p className="text-sm font-semibold">InternAI Beta</p>
+        <p className="text-sm font-semibold">InternAI</p>
         <p className="mt-1 text-xs leading-5 text-text2">
-          Kariyer araçların geliştirme aşamasında.
+          Doğru stajı bul, yapay zekâ ile daha güçlü başvur.
         </p>
       </div>
     </aside>

@@ -47,10 +47,8 @@ export function ProfileWorkspace() {
     try {
       await signOut(auth);
       router.replace("/login");
-    } catch (signOutError: unknown) {
-      setError(
-        signOutError instanceof Error ? signOutError.message : "Çıkış yapılamadı."
-      );
+    } catch {
+      setError("Çıkış yapılamadı. Lütfen tekrar deneyin.");
       setSigningOut(false);
     }
   };

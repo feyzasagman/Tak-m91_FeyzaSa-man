@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../providers/AuthProvider";
+import { FullPageLoading } from "../ui/FullPageLoading";
+import { ROUTES } from "@/lib/routes";
 import { AppHeader } from "./AppHeader";
 import { Sidebar } from "./Sidebar";
 
@@ -12,7 +14,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) router.replace("/login");
+    if (!loading && !user) router.replace(ROUTES.login);
   }, [loading, router, user]);
 
   useEffect(() => {
@@ -22,15 +24,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     };
   }, [mobileMenuOpen]);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mobileMenuOpen]);
+
   if (loading || !user) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-bg text-text2">
-        <div className="flex items-center gap-3">
-          <span className="size-5 animate-spin rounded-full border-2 border-brand/30 border-t-brand" />
-          Oturum kontrol ediliyor...
-        </div>
-      </main>
-    );
+    return <FullPageLoading label="Oturum kontrol ediliyor..." />;
   }
 
   return (
@@ -38,7 +42,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar />
 
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Mobil menü">
           <button
             type="button"
             aria-label="Menüyü kapat"

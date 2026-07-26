@@ -3,10 +3,11 @@
 import { useRef, useState } from "react";
 import { PageHeader } from "@/app/components/layout/PageHeader";
 import { SectionCard } from "@/app/components/ui/section-card";
+import { useToast } from "@/app/providers/ToastProvider";
+import { useApplications } from "@/features/applications/hooks/useApplications";
 import { defaultAssistantInput, getModeMeta } from "../data/assistant-config";
 import { useGeneratedApplications } from "../hooks/useGeneratedApplications";
 import { useResumeContext } from "../hooks/useResumeContext";
-import { useApplications } from "@/features/applications/hooks/useApplications";
 import {
   ApplicationGenerationError,
   generateApplication as generateApplicationApi,
@@ -61,6 +62,7 @@ export function ApplicationAssistantWorkspace({
   } | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
   const [generationError, setGenerationError] = useState("");
+  const { showToast } = useToast();
   const resumeContext = useResumeContext();
   const history = useGeneratedApplications();
   const applicationStore = useApplications();
@@ -135,6 +137,11 @@ export function ApplicationAssistantWorkspace({
         });
       }
     }
+    showToast(
+      mode === "cover-letter"
+        ? "Ön yazı kaydedildi."
+        : "Oluşturulan metin kaydedildi."
+    );
   };
 
   const openHistory = (item: GeneratedApplication) => {
@@ -197,7 +204,7 @@ export function ApplicationAssistantWorkspace({
               saved={Boolean(savedId)}
               sourceLabel={
                 result.metadata?.model === "mock-development"
-                  ? "Geliştirme ortamı mock sonucu"
+                  ? "Geliştirme ortamı sonucu"
                   : result.metadata?.model
                     ? "Gemini AI tarafından üretildi"
                     : "Kaydedilmiş üretim"

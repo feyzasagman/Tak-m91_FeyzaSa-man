@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 
 export default function NotFound() {
   return (
@@ -8,17 +9,22 @@ export default function NotFound() {
           404
         </p>
         <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-          Bu sayfa bulunamadı
+          Aradığınız sayfa bulunamadı.
         </h1>
         <p className="mt-3 leading-7 text-text2">
-          Aradığın sayfa taşınmış veya henüz hazırlanıyor olabilir.
+          Bağlantı hatalı olabilir veya sayfa taşınmış olabilir.
         </p>
-        <Link
-          href="/"
-          className="ui-button ui-button-brand mt-7"
-        >
-          Ana sayfaya dön
-        </Link>
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+          <Link href={ROUTES.dashboard} className="ui-button ui-button-brand">
+            Dashboard’a Dön
+          </Link>
+          <Link
+            href={ROUTES.internships}
+            className="ui-button ui-button-secondary"
+          >
+            Staj İlanlarını Gör
+          </Link>
+        </div>
       </section>
     </main>
   );

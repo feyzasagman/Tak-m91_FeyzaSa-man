@@ -1,23 +1,30 @@
 import Link from "next/link";
 import { Card } from "@/app/components/ui/card";
+import { ROUTES } from "@/lib/routes";
 
 const STEPS = [
   {
-    title: "CV’ni yükle ve analiz et",
-    description: "PDF CV’nden metin çıkar, ATS ve uyum skorunu gör.",
-    href: "/resume-analysis",
+    title: "CV yükle",
+    description: "PDF CV’ni yükle, metni çıkar ve AI analizi başlat.",
+    href: ROUTES.resumeAnalysis,
     action: "CV Analiz Et",
   },
   {
-    title: "Sana uygun staj ilanlarını keşfet",
-    description: "Filtrelerle ilan bul, kaydet ve uyumu karşılaştır.",
-    href: "/internships",
+    title: "Staj ilanı seç",
+    description: "Şehir ve alan filtreleriyle sana uygun ilanı bul.",
+    href: ROUTES.internships,
     action: "Stajları Keşfet",
   },
   {
-    title: "İlk başvurunu oluştur ve takip et",
-    description: "Başvurunu kaydet, durumunu güncelle, AI metinlerini hazırla.",
-    href: "/applications",
+    title: "Başvuru metni oluştur",
+    description: "Ön yazı veya başvuru e-postasını AI asistanla hazırla.",
+    href: `${ROUTES.aiAssistant}?mode=cover-letter`,
+    action: "Metin Oluştur",
+  },
+  {
+    title: "Başvurunu takip et",
+    description: "Durumu güncelle, not ekle ve sürecini yönet.",
+    href: ROUTES.applications,
     action: "Başvurulara Git",
   },
 ] as const;
@@ -25,11 +32,11 @@ const STEPS = [
 export function DashboardEmptyState() {
   return (
     <Card className="p-6">
-      <h2 className="text-xl font-semibold">InternAI ile başlamak için 3 adım</h2>
+      <h2 className="text-xl font-semibold">InternAI ile başlamak için 4 adım</h2>
       <p className="mt-2 text-sm leading-6 text-text2">
         Henüz veri birikmemiş. Bu adımlarla kariyer panelin dolmaya başlar.
       </p>
-      <ol className="mt-5 grid gap-4 md:grid-cols-3">
+      <ol className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {STEPS.map((step, index) => (
           <li
             key={step.title}

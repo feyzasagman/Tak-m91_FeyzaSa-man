@@ -28,7 +28,11 @@ export function InternshipCard({
         <button
           type="button"
           onClick={() => onToggleSaved(internship.id)}
-          aria-label={saved ? `${internship.title} ilanını kayıtlardan çıkar` : `${internship.title} ilanını kaydet`}
+          aria-label={
+            saved
+              ? `${internship.title} ilanını kayıtlardan çıkar`
+              : `${internship.title} ilanını kaydet`
+          }
           aria-pressed={saved}
           className={`flex size-10 shrink-0 items-center justify-center rounded-xl border text-lg transition ${
             saved
@@ -46,29 +50,19 @@ export function InternshipCard({
         <InternshipBadge tone="brand">{internship.internshipType}</InternshipBadge>
       </div>
 
-      <p className="mt-4 line-clamp-3 text-sm leading-6 text-text2">
+      <p className="mt-4 line-clamp-2 text-sm leading-6 text-text2">
         {internship.description}
       </p>
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        {internship.skills.slice(0, 4).map((skill) => (
-          <InternshipBadge key={skill}>{skill}</InternshipBadge>
-        ))}
-      </div>
 
       <div className="mt-5">
         <CompatibilityScore score={internship.compatibilityScore} compact />
       </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-3 border-t border-border pt-4 text-xs text-text2">
-        <div>
-          <p>Son başvuru</p>
-          <p className="mt-1 font-medium text-text">{formatInternshipDate(internship.deadline)}</p>
-        </div>
-        <div>
-          <p>Yayınlanma</p>
-          <p className="mt-1 font-medium text-text">{formatInternshipDate(internship.publishedAt)}</p>
-        </div>
+      <div className="mt-5 border-t border-border pt-4 text-xs text-text2">
+        <p>Son başvuru</p>
+        <p className="mt-1 font-medium text-text">
+          {formatInternshipDate(internship.deadline)}
+        </p>
       </div>
 
       <div className="mt-auto grid gap-2 pt-5">
@@ -79,17 +73,7 @@ export function InternshipCard({
         >
           Detayları Gör
         </Link>
-        <div className="grid grid-cols-2 gap-2">
-          <ApplicationAddButton internship={internship} compact />
-          <button
-            type="button"
-            onClick={() => onToggleSaved(internship.id)}
-            className="ui-button ui-button-secondary px-3"
-            aria-label={saved ? "İlanı kayıtlardan çıkar" : "İlanı kaydet"}
-          >
-            {saved ? "Kaydedildi" : "Kaydet"}
-          </button>
-        </div>
+        <ApplicationAddButton internship={internship} />
       </div>
     </Card>
   );

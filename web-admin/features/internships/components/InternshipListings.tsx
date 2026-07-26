@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { PageHeader } from "@/app/components/layout/PageHeader";
+import { useToast } from "@/app/providers/ToastProvider";
 import { internships } from "../data/internships";
 import { useSavedInternships } from "../hooks/useSavedInternships";
 import {
@@ -15,11 +16,26 @@ import { InternshipFilters } from "./InternshipFilters";
 import { InternshipSearch } from "./InternshipSearch";
 
 export function InternshipListings() {
+  const { showToast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState<InternshipFilterState>(
     emptyInternshipFilters
   );
   const { isSaved, toggleSaved } = useSavedInternships();
+
+  const handleToggleSaved = (id: string) => {
+    const result = toggleSaved(id);
+    if (result === "storage-error") {
+      showToast(
+        "İlan kaydı güncellenemedi. Tarayıcı depolama ayarlarını kontrol edin.",
+        "error"
+      );
+      return;
+    }
+    showToast(
+      result === "saved" ? "İlan kaydedildi." : "İlan kayıtlardan çıkarıldı."
+    );
+  };
 
   const results = useMemo(
     () => filterInternships(internships, searchTerm, filters),
@@ -73,7 +89,7 @@ export function InternshipListings() {
                   key={internship.id}
                   internship={internship}
                   saved={isSaved(internship.id)}
-                  onToggleSaved={toggleSaved}
+                  onToggleSaved={handleToggleSaved}
                 />
               ))}
             </div>

@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { PageHeader } from "@/app/components/layout/PageHeader";
+import { useToast } from "@/app/providers/ToastProvider";
+import { ROUTES } from "@/lib/routes";
 import { useApplicationView } from "../hooks/useApplicationView";
 import { useApplications } from "../hooks/useApplications";
 import type {
@@ -48,11 +50,10 @@ export function ApplicationsOverview() {
   } = useApplications();
   const { view, setView } = useApplicationView();
   const [filters, setFilters] = useState<ApplicationFiltersState>(defaultFilters);
+  const { showToast } = useToast();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focusNotes, setFocusNotes] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [toast, setToast] = useState("");
-  const toastTimer = useRef<number | null>(null);
 
   const filteredApplications = useMemo(
     () => filterAndSortApplications(applications, filters),
@@ -79,11 +80,12 @@ export function ApplicationsOverview() {
     setFocusNotes(false);
   }, []);
 
-  const showMessage = useCallback((message: string) => {
-    setToast(message);
-    if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    toastTimer.current = window.setTimeout(() => setToast(""), 2500);
-  }, []);
+  const showMessage = useCallback(
+    (message: string) => {
+      showToast(message, message.includes("hata") ? "error" : "success");
+    },
+    [showToast]
+  );
 
   const openApplication = (application: Application, notes = false) => {
     setSelectedId(application.id);
@@ -109,7 +111,7 @@ export function ApplicationsOverview() {
         title="Başvurularım"
         description="Staj başvurularını, görüşme süreçlerini ve sonuçlarını tek panelden takip et."
         action={
-          <Link href="/internships" className="ui-button ui-button-brand">
+          <Link href={ROUTES.internships} className="ui-button ui-button-brand">
             Yeni fırsat bul
           </Link>
         }
@@ -147,20 +149,25 @@ export function ApplicationsOverview() {
           onDelete={(application) => setDeleteId(application.id)}
         />
       ) : (
-        <ApplicationKanban
-          applications={filteredApplications}
-          onMove={(id, status, beforeId) => {
-            showMessage(
-              moveApplication(id, status, beforeId)
-                ? "Başvuru durumu güncellendi."
-                : "İşlem sırasında bir hata oluştu."
-            );
-          }}
-          onOpen={openApplication}
-          onStatusChange={changeStatus}
-          onAddNote={(application) => openApplication(application, true)}
-          onDelete={(application) => setDeleteId(application.id)}
-        />
+        <div className="space-y-3">
+          <p className="text-xs text-text2 lg:hidden">
+            Kanban panosunu yatay kaydırarak durum sütunları arasında gezinebilirsin.
+          </p>
+          <ApplicationKanban
+            applications={filteredApplications}
+            onMove={(id, status, beforeId) => {
+              showMessage(
+                moveApplication(id, status, beforeId)
+                  ? "Başvuru durumu güncellendi."
+                  : "İşlem sırasında bir hata oluştu."
+              );
+            }}
+            onOpen={openApplication}
+            onStatusChange={changeStatus}
+            onAddNote={(application) => openApplication(application, true)}
+            onDelete={(application) => setDeleteId(application.id)}
+          />
+        </div>
       )}
 
       <ApplicationDetailDrawer
@@ -226,11 +233,6 @@ export function ApplicationsOverview() {
           );
         }}
       />
-      {toast && (
-        <div role="status" className="fixed bottom-5 right-5 z-[120] max-w-sm rounded-2xl border border-border bg-surface px-4 py-3 text-sm shadow-2xl">
-          {toast}
-        </div>
-      )}
     </section>
   );
 }

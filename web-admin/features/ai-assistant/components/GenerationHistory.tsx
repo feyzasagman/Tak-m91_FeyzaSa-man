@@ -14,7 +14,7 @@ export function GenerationHistory({
     <section>
       <div>
         <h2 className="text-xl font-semibold">Geçmiş Oluşturmalar</h2>
-        <p className="mt-1 text-sm text-text2">Kaydettiğin mock başvuru metinleri.</p>
+        <p className="mt-1 text-sm text-text2">Kaydettiğin başvuru metinleri.</p>
       </div>
       {items.length === 0 ? (
         <div className="mt-4 rounded-2xl border border-dashed border-border bg-surface p-7 text-center text-sm text-text2">

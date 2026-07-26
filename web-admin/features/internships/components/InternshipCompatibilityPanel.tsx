@@ -22,7 +22,7 @@ export function InternshipCompatibilityPanel({
   return (
     <SectionCard
       title="AI Uyum Değerlendirmesi"
-      description="Mevcut mock profil verilerine göre ön değerlendirme."
+      description="Mevcut CV ve profil verilerine göre ön değerlendirme."
     >
       <CompatibilityScore score={internship.compatibilityScore} />
       <div className="mt-5 grid gap-5">

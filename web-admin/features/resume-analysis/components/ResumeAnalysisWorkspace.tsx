@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/app/components/layout/PageHeader";
 import { Card } from "@/app/components/ui/card";
+import { useToast } from "@/app/providers/ToastProvider";
 import { useApplications } from "@/features/applications/hooks/useApplications";
+import { ROUTES } from "@/lib/routes";
 import { useResumeAnalysis } from "../hooks/useResumeAnalysis";
 import { useResumeExtraction } from "../hooks/useResumeExtraction";
 import {
@@ -21,14 +23,13 @@ import {
 import { ResumeAnalysisError } from "./ResumeAnalysisError";
 import { ResumeAnalysisLoading } from "./ResumeAnalysisLoading";
 import { ResumeAnalysisReport } from "./ResumeAnalysisReport";
+import { ResumeAnalysisTimeline } from "./ResumeAnalysisTimeline";
 import { ResumeExtractionError } from "./ResumeExtractionError";
 import { ResumeExtractionLoading } from "./ResumeExtractionLoading";
 import { ResumeExtractionPreview } from "./ResumeExtractionPreview";
 import { ResumeFileCard } from "./ResumeFileCard";
 import { ResumeHistory } from "./ResumeHistory";
 import { ResumeUpload } from "./ResumeUpload";
-
-const TOAST_DURATION_MS = 2500;
 
 export function ResumeAnalysisWorkspace({
   targetInternship,
@@ -38,6 +39,7 @@ export function ResumeAnalysisWorkspace({
   requestedInternshipId?: string;
 }) {
   const router = useRouter();
+  const { showToast } = useToast();
   const applications = useApplications();
   const {
     file,
@@ -70,26 +72,6 @@ export function ResumeAnalysisWorkspace({
   const [isContextReady, setIsContextReady] = useState(false);
   const [wasTruncated, setWasTruncated] = useState(false);
   const [contextError, setContextError] = useState<string | null>(null);
-  const [toast, setToast] = useState("");
-  const toastTimer = useRef<number | null>(null);
-
-  const clearToastTimer = useCallback(() => {
-    if (toastTimer.current) {
-      window.clearTimeout(toastTimer.current);
-      toastTimer.current = null;
-    }
-  }, []);
-
-  useEffect(() => clearToastTimer, [clearToastTimer]);
-
-  const showToast = useCallback(
-    (message: string) => {
-      setToast(message);
-      clearToastTimer();
-      toastTimer.current = window.setTimeout(() => setToast(""), TOAST_DURATION_MS);
-    },
-    [clearToastTimer]
-  );
 
   const clearReadyState = useCallback(() => {
     setIsContextReady(false);
@@ -198,27 +180,29 @@ export function ResumeAnalysisWorkspace({
     } else {
       showToast("Başvuru oluşturuldu.");
     }
-    router.push("/app/applications");
+    router.push(ROUTES.applications);
   };
 
   const showReport = analysisProgress === "complete" && analysisResult;
+  const timelineStep = showReport
+    ? 4
+    : isAnalyzing
+      ? 3
+      : extractionResult
+        ? 2
+        : isExtracting || file
+          ? 1
+          : 0;
 
   return (
     <section className="space-y-7">
-      {toast && (
-        <div
-          role="status"
-          className="fixed bottom-5 right-5 z-[80] max-w-sm rounded-2xl border border-emerald-500/30 bg-emerald-950 px-4 py-3 text-sm text-emerald-100 shadow-xl"
-        >
-          {toast}
-        </div>
-      )}
-
       <PageHeader
         eyebrow="Kariyer profilin"
         title="AI CV Analizi"
         description="PDF’den çıkarılan gerçek CV metnini Gemini ile analiz et; isteğe bağlı olarak seçili staj ilanı ile ATS uyum raporu oluştur."
       />
+
+      <ResumeAnalysisTimeline activeStep={timelineStep} />
 
       {targetInternship ? (
         <Card className="border-brand/25 bg-brand/10 p-4">
@@ -305,8 +289,6 @@ export function ResumeAnalysisWorkspace({
               resetExtraction();
               clearAnalysis();
               clearReadyState();
-              setToast("");
-              clearToastTimer();
             }}
             className="ui-button ui-button-secondary"
           >

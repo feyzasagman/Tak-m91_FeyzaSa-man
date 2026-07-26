@@ -33,19 +33,6 @@ export interface LegacyInternshipCompatibilityResult {
   suggestion: string;
 }
 
-/** Eski mock yükleme akışı için (useResumeUpload). */
-export interface LegacyMockResumeAnalysisResult {
-  score: number;
-  summary: string;
-  strengths: string[];
-  improvementAreas: string[];
-  detectedSkills: ResumeSkill[];
-  suggestedSkills: ResumeSkill[];
-  sectionScores: ResumeSectionScore[];
-  recommendations: LegacyResumeRecommendation[];
-  internshipCompatibility: LegacyInternshipCompatibilityResult;
-}
-
 export type {
   ApplicationRecommendation,
   ResumeAnalysisHistoryItem,

@@ -66,11 +66,11 @@ export default function Home() {
             InternAI
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-            Yapay zekâ destekli akıllı staj ve kariyer platformu
+            Doğru stajı bul, yapay zekâ ile daha güçlü başvur.
           </p>
           <p className="mt-3 max-w-2xl text-base leading-7 text-slate-400">
-            Şehir bazlı staj ilanlarını keşfet, CV’ni analiz et ve her başvuru
-            için kişiselleştirilmiş başvuru metinleri oluştur.
+            Şehir bazlı staj ilanlarını keşfet, CV’ni yapay zekâ ile analiz et ve
+            her başvuru için kişiselleştirilmiş metinler oluştur.
           </p>
         </section>
 

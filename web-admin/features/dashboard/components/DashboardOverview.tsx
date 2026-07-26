@@ -6,13 +6,10 @@ import { ActivityFeed } from "./ActivityFeed";
 import { ApplicationStatusSummary } from "./ApplicationStatusSummary";
 import { DashboardEmptyState } from "./DashboardEmptyState";
 import { DashboardHeader } from "./DashboardHeader";
-import { DashboardRecommendations } from "./DashboardRecommendations";
 import { DashboardSkeleton } from "./DashboardSkeleton";
 import { DashboardStatGrid } from "./DashboardStatGrid";
-import { GeneratedContentPreview } from "./GeneratedContentPreview";
 import { LatestResumeAnalysis } from "./LatestResumeAnalysis";
 import { QuickActions } from "./QuickActions";
-import { RecentApplications } from "./RecentApplications";
 import { UpcomingDeadlineList } from "./UpcomingDeadlineList";
 
 export function DashboardOverview() {
@@ -29,17 +26,14 @@ export function DashboardOverview() {
       {data.isEmpty ? (
         <>
           <DashboardEmptyState />
-          <CareerCoachCard />
           <QuickActions items={data.quickActions} />
+          <CareerCoachCard />
         </>
       ) : (
         <>
           <DashboardStatGrid stats={data.stats} />
-
-          <CareerCoachCard />
-
           <QuickActions items={data.quickActions} />
-
+          <LatestResumeAnalysis analysis={data.latestAnalysis} />
           <div className="grid gap-5 xl:grid-cols-2">
             <ApplicationStatusSummary
               statusCounts={data.stats.statusCounts}
@@ -47,17 +41,7 @@ export function DashboardOverview() {
             />
             <UpcomingDeadlineList items={data.upcomingDeadlines} />
           </div>
-
-          <div className="grid gap-5 xl:grid-cols-2">
-            <RecentApplications items={data.recentApplications} />
-            <LatestResumeAnalysis analysis={data.latestAnalysis} />
-          </div>
-
-          <div className="grid gap-5 xl:grid-cols-2">
-            <DashboardRecommendations items={data.recommendations} />
-            <GeneratedContentPreview items={data.generatedContent} />
-          </div>
-
+          <CareerCoachCard />
           <ActivityFeed items={data.activities} />
         </>
       )}
