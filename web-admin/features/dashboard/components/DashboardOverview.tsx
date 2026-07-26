@@ -1,5 +1,6 @@
 "use client";
 
+import { CareerCoachCard } from "@/features/career-coach/components/CareerCoachCard";
 import { useDashboardData } from "../hooks/useDashboardData";
 import { ActivityFeed } from "./ActivityFeed";
 import { ApplicationStatusSummary } from "./ApplicationStatusSummary";
@@ -28,11 +29,14 @@ export function DashboardOverview() {
       {data.isEmpty ? (
         <>
           <DashboardEmptyState />
+          <CareerCoachCard />
           <QuickActions items={data.quickActions} />
         </>
       ) : (
         <>
           <DashboardStatGrid stats={data.stats} />
+
+          <CareerCoachCard />
 
           <QuickActions items={data.quickActions} />
 
