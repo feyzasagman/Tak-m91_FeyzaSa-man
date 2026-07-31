@@ -56,8 +56,6 @@ Bu proje **tek kişi** tarafından geliştirilmektedir. Ayrıntı: [product/team
 - [Sprint 1 screenshots](./sprint-1/screenshots/README.md)
 - [Sprint 2 screenshots](./sprint-2/screenshots/README.md)
 - [Sprint 3 screenshots](./sprint-3/screenshots/README.md)
-- [Duplicates](./duplicates/README.md)
-- [Needs review](./needs-review/README.md)
 
 ## Dürüstlük notu
 

@@ -16,15 +16,15 @@
   <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=nextdotjs" />
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" />
   <img alt="Firebase" src="https://img.shields.io/badge/Firebase-Auth%20%7C%20Firestore-FFCA28?style=flat-square&logo=firebase&logoColor=black" />
-  <img alt="Gemini AI" src="https://img.shields.io/badge/Gemini-AI-8E75B2?style=flat-square&logo=googlegemini&logoColor=white" />
+  <img alt="Gemini AI" src="https://img.shields.io/badge/Gemini-2.5--flash--lite-8E75B2?style=flat-square&logo=googlegemini&logoColor=white" />
   <img alt="Vercel" src="https://img.shields.io/badge/Deploy-Vercel-000000?style=flat-square&logo=vercel&logoColor=white" />
 </p>
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Canlı Demo
 
-Canlı ortamda sistemi tarayıcıdan deneyebilirsiniz:
+Sistemi tarayıcıdan deneyebilirsiniz:
 
 🔗 **https://internai-fngvr2dgc-feyza.vercel.app**
 
@@ -32,9 +32,9 @@ Hesap oluşturup giriş yaptıktan sonra staj keşfi, CV analizi, AI başvuru as
 
 ---
 
-## Overview
+## Genel Bakış
 
-InternAI, üniversite öğrencileri ve yeni mezunların staj süreçlerini tek bir çalışma alanında yönetmesini sağlar. Klasik ilan listelerinin ötesinde; şehir bazlı keşif, Gemini ile CV analizi, ilana özel başvuru metinleri, başvuru takibi ve kariyer önerilerini bir araya getirir.
+InternAI, üniversite öğrencileri ve yeni mezunların staj süreçlerini tek bir çalışma alanında yönetmesini sağlar. Şehir bazlı ilan keşfi, Gemini ile CV analizi, ilana özel başvuru metinleri, başvuru takibi ve kariyer önerilerini bir araya getirir.
 
 | | |
 |---|---|
@@ -48,59 +48,112 @@ MVP’de staj ilanları **temsili demo verisidir**; canlı bir staj API’sinden
 
 ---
 
-## ✨ Features
+## ✨ Özellikler
 
-| Feature | Description |
-|---------|-------------|
-| **Authentication** | Firebase Authentication ile kayıt, giriş ve şifre sıfırlama |
+| Özellik | Açıklama |
+|---------|----------|
+| **Kimlik doğrulama** | Firebase Authentication ile kayıt, giriş ve şifre sıfırlama |
 | **Dashboard** | Özet istatistikler, hızlı işlemler ve kariyer çalışma alanı |
-| **Internship Discovery** | Şehir / alan / model filtreleriyle staj kataloğu (demo veri) |
-| **AI Resume Analysis** | PDF’den metin çıkarma, Gemini ile CV–ilan uyumu ve ATS tahmini |
-| **AI Cover Letter Generation** | AI Başvuru Asistanı ile ön yazı, e-posta, mülakat ve motivasyon metinleri |
-| **Applications Board** | Liste + Kanban ile başvuru takibi, not ve timeline |
-| **AI Career Coach** | Mevcut veriden kural tabanlı kişiselleştirilmiş öneriler |
-| **User Profile** | Hesap bilgisi ve kariyer kimliği alanı |
-| **Settings** | Hesap tercihleri ve görünüm ayarları |
-| **Notifications** | Firestore’a kaydedilen bildirim tercihleri (push yok; MVP tercih kaydı) |
-| **Firebase Integration** | Auth + Firestore (bildirim ayarları vb.) |
-| **Gemini AI Integration** | Sunucu tarafı Gemini API (`GEMINI_API_KEY`) |
-| **Responsive Design** | Mobil ve masaüstü uyumlu arayüz |
-
-> **Not:** Ayrı bir firma / admin paneli (çoklu kullanıcı yönetimi) bu MVP kapsamında yoktur; kullanıcı ayarları ve kişisel çalışma alanı mevcuttur.
+| **Staj keşfi** | Şehir / alan / model filtreleriyle staj kataloğu (demo veri) |
+| **AI CV analizi** | PDF metin çıkarma, Gemini ile CV–ilan uyumu ve ATS tahmini |
+| **AI ön yazı / başvuru metni** | AI Başvuru Asistanı ile ön yazı, e-posta, mülakat ve motivasyon |
+| **Başvuru panosu** | Liste + Kanban, not ve timeline |
+| **AI Kariyer Koçu** | Mevcut veriden kural tabanlı kişiselleştirilmiş öneriler |
+| **Kullanıcı profili** | Hesap bilgisi ve kariyer kimliği alanı |
+| **Ayarlar** | Hesap tercihleri ve görünüm ayarları |
+| **Bildirim tercihleri** | Firestore’a kaydedilen tercihler (push bildirimi yok) |
+| **Firebase entegrasyonu** | Auth + Firestore |
+| **Gemini AI entegrasyonu** | Sunucu tarafı Gemini API (`gemini-2.5-flash-lite`) |
+| **Responsive tasarım** | Mobil ve masaüstü uyumlu arayüz |
 
 ---
 
-## 🖼 Demo Screenshots
+## 👤 Kullanıcı Akışı
 
-### Landing & Auth
+1. Kayıt ol / giriş yap (Firebase Auth)
+2. Dashboard üzerinden çalışma alanına gir
+3. Staj ilanlarını filtrele ve incele (demo katalog)
+4. CV PDF yükle → metni çıkar → kontrol et
+5. Gemini ile CV analizi ve ATS / ilan uyumu raporunu gör
+6. AI Başvuru Asistanı ile ön yazı veya e-posta üret
+7. Başvuruyu panoya ekle; durum, not ve timeline ile takip et
+8. Ayarlardan bildirim tercihlerini kaydet
 
-| Landing | Login | Register |
+---
+
+## 🏗 Sistem Mimarisi
+
+```text
+Kullanıcı (Tarayıcı)
+        │
+        ▼
+   Next.js (App Router)
+   web-admin/
+        │
+        ├──────────────► Firebase Authentication
+        │
+        ├──────────────► Cloud Firestore
+        │                 (örn. bildirim tercihleri)
+        │
+        └──────────────► API Routes (sunucu)
+                           /api/resume/extract
+                           /api/resume/analyze
+                           /api/ai/generate-application
+                                      │
+                                      ▼
+                               Google Gemini API
+                               (gemini-2.5-flash-lite)
+```
+
+İstemci tarafında başvuru panosu, kaydedilen ilanlar, CV bağlamı ve üretim geçmişi `localStorage` ile tutulur. AI çağrıları yalnızca sunucu API route’ları üzerinden yapılır.
+
+---
+
+## 🤖 Yapay Zekâ Teknik Akışı
+
+Model: **`gemini-2.5-flash-lite`** (`web-admin/lib/ai/gemini.ts`)
+
+1. **PDF metin çıkarma** — Kullanıcı PDF yükler; `/api/resume/extract` sunucuda metni çıkarır.
+2. **Metin kontrolü** — Kullanıcı çıkan metni gözden geçirip düzenleyebilir; bağlam tarayıcıda saklanır.
+3. **CV analizi** — `/api/resume/analyze` CV metnini (ve isteğe bağlı ilan bilgisini) alır; `GEMINI_API_KEY` ile Gemini’ye istek atar.
+4. **Yapılandırılmış sonuç** — Skorlar, güçlü/zayıf yönler, beceriler ve öneriler şema ile doğrulanır.
+5. **ATS ve ilan uyumu** — ATS tahmini ve ilan–CV uyum değerlendirmesi raporda sunulur.
+6. **Ön yazı / e-posta üretimi** — `/api/ai/generate-application` seçilen moda göre metin üretir (ön yazı, e-posta, CV iyileştirme, mülakat, motivasyon).
+7. **Kariyer koçu** — Ek Gemini çağrısı yapmaz; mevcut yerel veriden kural tabanlı öneri üretir.
+
+AI çıktıları tahmindir; kullanıcı kontrolü ve düzenlemesi gerektirir.
+
+---
+
+## 🖼 Demo Ekran Görüntüleri
+
+### Ana sayfa ve kimlik doğrulama
+
+| Ana sayfa | Giriş | Kayıt |
 |:---:|:---:|:---:|
-| ![Landing](./docs/sprint-1/screenshots/landing-page.png) | ![Login](./docs/sprint-1/screenshots/login.png) | ![Register](./docs/sprint-1/screenshots/register.png) |
+| ![Ana sayfa](./docs/sprint-1/screenshots/landing-page.png) | ![Giriş](./docs/sprint-1/screenshots/login.png) | ![Kayıt](./docs/sprint-1/screenshots/register.png) |
 
-### Discovery & Profile
+### Keşif ve profil
 
-| Internships | Profile |
+| Staj ilanları | Profil |
 |:---:|:---:|
-| ![Internships](./docs/sprint-1/screenshots/internships.png) | ![Profile](./docs/sprint-1/screenshots/profile.png) |
+| ![Staj ilanları](./docs/sprint-1/screenshots/internships.png) | ![Profil](./docs/sprint-1/screenshots/profile.png) |
 
-### AI Resume & Assistant
+### AI CV ve asistan
 
-| Resume Upload | Resume Score | Application Assistant |
+| CV yükleme | CV skoru | Başvuru asistanı |
 |:---:|:---:|:---:|
-| ![Upload](./docs/sprint-2/screenshots/resume-upload.png) | ![Score](./docs/sprint-2/screenshots/resume-score.png) | ![Assistant](./docs/sprint-2/screenshots/application-assistant.png) |
+| ![CV yükleme](./docs/sprint-2/screenshots/resume-upload.png) | ![CV skoru](./docs/sprint-2/screenshots/resume-score.png) | ![Asistan](./docs/sprint-2/screenshots/application-assistant.png) |
 
-### Applications, Dashboard & Settings
+### Başvurular, dashboard ve ayarlar
 
-| Applications | Final Dashboard | Settings |
+| Başvurular | Final dashboard | Ayarlar |
 |:---:|:---:|:---:|
-| ![Applications](./docs/sprint-3/screenshots/applications.png) | ![Dashboard](./docs/sprint-3/screenshots/final-dashboard.png) | ![Settings](./docs/sprint-3/screenshots/settings.png) |
-
-Tüm görseller: [docs/screenshots-organization-report.md](./docs/screenshots-organization-report.md)
+| ![Başvurular](./docs/sprint-3/screenshots/applications.png) | ![Dashboard](./docs/sprint-3/screenshots/final-dashboard.png) | ![Ayarlar](./docs/sprint-3/screenshots/settings.png) |
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Teknoloji Yığını
 
 ### Frontend
 
@@ -115,33 +168,59 @@ Tüm görseller: [docs/screenshots-organization-report.md](./docs/screenshots-or
 - Cloud Firestore
 - Firebase Authentication
 
-### AI
+### Yapay zekâ
 
 - Google Gemini API (`@google/genai`)
+- Model: `gemini-2.5-flash-lite`
 
-### Deployment
+### Dağıtım
 
 - Vercel
 
 ---
 
-## 📁 Project Structure
+## 🔒 Güvenlik ve Veri Gizliliği
+
+- `GEMINI_API_KEY` yalnızca sunucu tarafında kullanılır; istemciye gönderilmez.
+- `.env.local` Git dışında tutulur; şablon `web-admin/.env.example` içindedir.
+- Kimlik doğrulama Firebase Authentication ile yapılır.
+- Firestore Security Rules kullanıcının kendi verisine erişimini sınırlar (örn. bildirim tercihleri).
+- CV içeriği analiz için işlenir; kalıcı olarak sunucuda saklanmaz. Analiz geçmişi tarayıcı `localStorage` üzerindedir.
+- AI çıktıları tahmindir; nihai başvuru metinleri kullanıcı tarafından kontrol edilmelidir.
+
+---
+
+## ⚠ Bilinen Sınırlamalar
+
+- Staj ilanları canlı API değil; temsili **demo veri**dir.
+- Gerçek **push notification** yoktur; yalnızca tercih kaydı vardır.
+- **Firma / admin paneli** bu MVP kapsamında yoktur.
+- AI skorları ve metinler **garanti değildir**; kullanıcı doğrulaması gerekir.
+- Aşağıdaki veriler tarayıcı **localStorage** anahtarlarında tutulur:
+  - `internai.resume-analysis-context`
+  - `internai_resume_analysis_history`
+  - `internai.generated-applications`
+  - `internai.saved-internships`
+  - `internai.applications-board`
+  - `internai.applications-view`
+
+---
+
+## 📁 Proje Yapısı
 
 ```text
-YZTA_BOOTCAMP_TAKIM91/
+Tak-m91_FeyzaSa-man/
 ├── README.md
 ├── firebase.json
 ├── firestore.rules
 ├── .firebaserc
 ├── docs/
 │   ├── README.md
-│   ├── branding/                 # Marka kimliği & tasarım referansı
+│   ├── branding/                 # Marka kimliği
 │   ├── product/                  # Vizyon, backlog, özellikler, takım
-│   ├── sprint-1/                 # Sprint 1 süreç + screenshots/
-│   ├── sprint-2/                 # Sprint 2 süreç + screenshots/
-│   ├── sprint-3/                 # Sprint 3 süreç + screenshots/
-│   ├── duplicates/
-│   ├── needs-review/
+│   ├── sprint-1/                 # Sprint 1 + screenshots/
+│   ├── sprint-2/                 # Sprint 2 + screenshots/
+│   ├── sprint-3/                 # Sprint 3 + screenshots/
 │   └── screenshots-organization-report.md
 └── web-admin/                    # Next.js uygulaması
     ├── app/                      # App Router (sayfalar, API routes)
@@ -155,58 +234,58 @@ YZTA_BOOTCAMP_TAKIM91/
     │   ├── resume-analysis/
     │   └── settings/
     ├── lib/                      # Firebase, AI, routes
-    ├── public/brand/             # SVG logo (v2) & favicon
+    ├── public/brand/             # SVG logo & favicon
     ├── .env.example
     └── package.json
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Başlangıç
 
-### Prerequisites
+### Gereksinimler
 
 - Node.js 20+
 - npm
 - Firebase projesi (Auth + Firestore)
-- Gemini API anahtarı (CV analizi ve asistan için)
+- Gemini API anahtarı
 
-### 1. Clone
+### 1. Depoyu klonla
 
 ```bash
-git clone https://github.com/<your-username>/YZTA_BOOTCAMP_TAKIM91.git
-cd YZTA_BOOTCAMP_TAKIM91
+git clone https://github.com/feyzasagman/Tak-m91_FeyzaSa-man.git
+cd Tak-m91_FeyzaSa-man
 ```
 
-### 2. Install
+### 2. Bağımlılıkları kur
 
 ```bash
 cd web-admin
 npm install
 ```
 
-### 3. Environment
+### 3. Ortam değişkenleri
 
 ```bash
 cp .env.example .env.local
 ```
 
-`.env.local` içinde gerekli değişkenleri doldurun. Şablon: [`web-admin/.env.example`](./web-admin/.env.example)
+`.env.local` dosyasını doldurun. Şablon: [`web-admin/.env.example`](./web-admin/.env.example)
 
 | Değişken | Açıklama |
 |----------|----------|
 | `GEMINI_API_KEY` | Sunucu tarafı Gemini anahtarı |
 | `NEXT_PUBLIC_FIREBASE_*` | Firebase web yapılandırması |
 
-### 4. Run
+### 4. Geliştirme sunucusu
 
 ```bash
 npm run dev
 ```
 
-Uygulama varsayılan olarak [http://localhost:3000](http://localhost:3000) adresinde açılır.
+Uygulama: [http://localhost:3000](http://localhost:3000)
 
-### 5. Build (opsiyonel)
+### 5. Production build (opsiyonel)
 
 ```bash
 npm run build
@@ -215,7 +294,7 @@ npm start
 
 ---
 
-## 📚 Documentation
+## 📚 Dokümantasyon
 
 | Bölüm | Bağlantı |
 |-------|----------|
@@ -228,6 +307,7 @@ npm start
 | Sprint 1 | [docs/sprint-1/README.md](./docs/sprint-1/README.md) |
 | Sprint 2 | [docs/sprint-2/README.md](./docs/sprint-2/README.md) |
 | Sprint 3 | [docs/sprint-3/README.md](./docs/sprint-3/README.md) |
+| Ekran görüntüsü raporu | [docs/screenshots-organization-report.md](./docs/screenshots-organization-report.md) |
 
 ### Sprint özetleri
 
@@ -239,7 +319,7 @@ npm start
 
 ---
 
-## 🗺 Roadmap
+## 🗺 Yol Haritası
 
 - GitHub / LinkedIn profil analizi
 - Bulut senkronizasyonu (başvuru / CV geçmişi)
@@ -249,7 +329,7 @@ npm start
 
 ---
 
-## 👥 Team
+## 👥 Ekip
 
 Bu proje **Takım 91** kapsamında geliştirilmiştir.
 
@@ -263,8 +343,6 @@ Ayrıntı: [docs/product/team-and-roles.md](./docs/product/team-and-roles.md)
 
 ---
 
-## 📝 Notes
+## 📝 Proje Geliştirme Notu
 
-Diğer GitHub reposu: https://github.com/melismert805-ui/YZTA--Team-91
-
-Ekip arkadaşlarım ile formu doldurduktan sonra iletişim kuramadım; mesajlara dönüş alamadım ve ilgili GitHub reposuna Scrum Master tarafından eklenmediğim için süreci **bu repoda tek başıma** tamamlıyorum.
+Bu teslim, Bootcamp sürecinde **Takım 91** ürünü olarak bu depoda tamamlanmıştır. Geliştirme, Product Owner / Scrum Master / Developer rollerinin aynı kişi tarafından yürütüldüğü tek kişilik Scrum düzeninde yapılmıştır. Süreç belgeleri `docs/` altında yer alır.

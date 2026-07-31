@@ -62,4 +62,4 @@ Mevcut dosyalar: [screenshots/README.md](./screenshots/README.md)
 | `applications.png` | Başvurularım / Kanban |
 | `settings.png` | Ayarlar + bildirim tercihleri |
 
-Eksik: kariyer koçu ayrı kırpım, başvuru detay/timeline, responsive. Bildirimler için kopya: `docs/duplicates/notifications.png`.
+Eksik: kariyer koçu ayrı kırpım, başvuru detay/timeline, responsive. Bildirim tercihleri `settings.png` içinde görünür.

@@ -1,8 +1,9 @@
 # Ekran Görüntüsü Organizasyon Raporu
 
 Kaynak: Desktop `screenshots/` (16 PNG)  
-Hedef: `docs/sprint-*/screenshots/`, `docs/duplicates/`, `docs/needs-review/`  
-İşlem: kopyalama + yeniden adlandırma (orijinal Desktop dosyaları silinmedi; boyut/kalite/uzantı değiştirilmedi)
+Hedef: `docs/sprint-*/screenshots/`  
+İşlem: kopyalama + yeniden adlandırma (orijinal Desktop dosyaları silinmedi; boyut/kalite/uzantı değiştirilmedi)  
+Not: Geçici `duplicates/` ve `needs-review/` klasörleri final teslimde kaldırıldı.
 
 ## ✓ Sprint 1
 
@@ -28,14 +29,6 @@ Hedef: `docs/sprint-*/screenshots/`, `docs/duplicates/`, `docs/needs-review/`
 - final-dashboard.png
 - applications.png
 - settings.png
-
-## ✓ Duplicates
-
-- notifications.png *(settings.png ile aynı ekran; bildirim tercihleri görünür)*
-
-## ✓ Needs Review
-
-- *(boş — belirsiz atama yok)*
 
 ## README için önerilen birincil set
 

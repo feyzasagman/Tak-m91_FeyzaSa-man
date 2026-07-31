@@ -13,6 +13,6 @@ README ve jüri sunumu için seçilen kaliteli görseller:
 - Başvuru detay drawer / timeline ayrı ekranı
 - AI Kariyer Koçu paneli ayrı kırpımı
 - Mobil / responsive özel görsel
-- `notifications.png` ayrı dosya: aynı ekran `settings.png` içinde; kopya `docs/duplicates/notifications.png`
+- Ayrı `notifications.png`: bildirim tercihleri `settings.png` içinde görünür
 
 > Görseller yeniden boyutlandırılmadı / kalite düşürülmedi.
