@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" fill="none" role="img" aria-label="InternAI Kariyer Platformu">
   <defs>
     <linearGradient id="aiGradLight" x1="8" y1="8" x2="58" y2="58" gradientUnits="userSpaceOnUse">
@@ -13,6 +14,6 @@
     <rect x="47" y="22" width="5.8" height="30.5" rx="2.4" fill="url(#aiGradLight)"/>
     <path fill="url(#aiGradLight)" d="M49.9 7.2 51.5 12.1 56.4 13.7 51.5 15.3 49.9 20.2 48.3 15.3 43.4 13.7 48.3 12.1Z"/>
   </g>
-  <text x="78" y="36" fill="#0F172A" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="-0.03em">InternAI</text>
-  <text x="78" y="56" fill="#7C3AED" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="9.5" font-weight="600" letter-spacing="0.22em">KAR&#x0130;YER PLATFORMU</text>
+  <text x="78" y="36" fill="#0F172A" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="-0.03em">InternAI</text>
+  <text x="78" y="56" fill="#7C3AED" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="9.5" font-weight="600" letter-spacing="0.22em">KARİYER PLATFORMU</text>
 </svg>
