@@ -1,105 +1,111 @@
-# TAKIM 91 FEYZA SAĞMAN
+# TAKIM 91 — Feyza Sağman
 
-Diğer GİTHUB Reposu: https://github.com/melismert805-ui/YZTA--Team-91  
-Ekip arkadaşlarım ile formu doldurduktan sonra iletişim kuramadım mesajlara dönüş almadım ve GİTHUB reposuna scrum master bizleri eklemediği için tek başıma bu repodan süreci tamamlayacağım.
+Diğer GitHub reposu: https://github.com/melismert805-ui/YZTA--Team-91  
 
-🚀 InternAI – Yapay Zekâ Destekli Akıllı Staj Platformu
-📌 Proje Hakkında
+Ekip arkadaşlarım ile formu doldurduktan sonra iletişim kuramadım; mesajlara dönüş alamadım ve ilgili GitHub reposuna Scrum Master tarafından eklenmediğim için süreci **bu repoda tek başıma** tamamlıyorum.
 
-InternAI, üniversite öğrencileri ve yeni mezunların staj başvuru süreçlerini daha hızlı, bilinçli ve başarılı bir şekilde yönetmelerini sağlayan yapay zekâ destekli akıllı bir kariyer platformudur.
+---
 
-Geleneksel staj platformları yalnızca ilan listelemekle sınırlıyken, InternAI kullanıcılarına başvuru sürecinin her aşamasında rehberlik eden kişisel bir kariyer asistanı sunar.
+## InternAI – Yapay Zekâ Destekli Akıllı Staj Platformu
 
-Platform; şehir bazlı staj ilanlarını keşfetme, CV analizi, ilan–CV uyumluluk değerlendirmesi, şirkete özel ön yazı oluşturma, özgeçmiş iyileştirme ve yapay zekâ destekli mülakat hazırlığı gibi süreçleri tek bir sistem içerisinde bir araya getirir.
+### Proje hakkında
 
-Her öğrencinin bilgi birikimi, yetenekleri ve kariyer hedefleri farklıdır. Bu nedenle InternAI, her kullanıcıya özel öneriler sunarak başvuru sürecini kişiselleştirir ve öğrencilerin doğru staj ilanlarına daha güçlü başvurular yapmasını hedefler.
+InternAI, üniversite öğrencileri ve yeni mezunların staj başvuru süreçlerini daha hızlı, bilinçli ve başarılı yönetmelerini sağlayan yapay zekâ destekli bir kariyer platformudur.
 
-🎯 Problem
+Geleneksel staj platformları çoğunlukla ilan listelemekle sınırlıyken InternAI; şehir bazlı ilan keşfi, CV analizi, ilan–CV uyumu, ilana özel başvuru metinleri, mülakat hazırlığı ve başvuru takibini tek çalışma alanında birleştirir.
 
-Her yıl binlerce öğrenci aynı özgeçmiş ve aynı ön yazıyla onlarca farklı şirkete başvuru yapmaktadır. Ancak bu başvuruların büyük bir kısmı, ilanın beklentileriyle yeterince uyuşmadığı için olumsuz sonuçlanmaktadır.
+**Slogan:** Doğru stajı bul, yapay zekâ ile daha güçlü başvur.
 
-Başlıca problemler şunlardır:
+### Problem
 
-Öğrenciler kendilerine uygun staj ilanlarını bulmakta zorlanmaktadır.
-Aynı CV ve ön yazı her şirkete gönderilmektedir.
-Başvuru öncesinde eksik yetkinlikler tespit edilememektedir.
-Öğrenciler hangi alanlarda kendilerini geliştirmeleri gerektiğini bilememektedir.
-Mülakat sürecine yeterince hazırlanamamaktadır.
-Başvuru süreci zaman alıcı ve verimsiz ilerlemektedir.
-💡 Çözüm
+Öğrenciler aynı CV ve ön yazıyla birçok şirkete başvurmakta; ilan uyumu düşük kaldığı için süreç verimsiz ilerlemektedir. Eksik yetkinlikler başvuru öncesi görünmez; mülakat hazırlığı ve başvuru takibi dağınık kalır.
 
-InternAI, yapay zekâyı kullanarak öğrencilerin staj başvurularını daha bilinçli ve başarılı hale getiren uçtan uca bir kariyer platformu sunmaktadır.
+### Çözüm
 
-Platform sayesinde kullanıcılar;
+InternAI ile kullanıcılar:
 
-📍 Şehir bazlı staj ilanlarını görüntüleyebilir,
-🤖 CV'lerini yapay zekâ ile analiz ettirebilir,
-📊 İlan ile özgeçmiş arasındaki uyumluluk oranını öğrenebilir,
-✍️ Her şirkete özel ön yazı oluşturabilir,
-📄 CV'lerini ilanın beklentilerine göre optimize edebilir,
-🎤 Yapay zekâ destekli mülakat simülasyonları ile kendilerini geliştirebilir,
-📈 Başvurularını tek panel üzerinden takip edebilir.
-🤖 Yapay Zekâ Özellikleri
-🧠 CV Analizi
-Teknik ve kişisel yetkinliklerin belirlenmesi
-Eksik becerilerin tespit edilmesi
-Güçlü yönlerin analiz edilmesi
-Kariyer gelişim önerileri sunulması
-🎯 Akıllı Staj Eşleştirme
-İlan ve CV uyumluluk analizi
-Yapay zekâ destekli staj önerileri
-Eksik yetkinliklerin belirlenmesi
-Başvuru başarı olasılığının değerlendirilmesi
-✍️ Ön Yazı Oluşturucu
+- Şehir bazlı staj ilanlarını keşfeder
+- CV’sini yapay zekâ ile analiz ettirir
+- İlan–CV uyumunu görür
+- Ön yazı / başvuru e-postası üretir
+- CV iyileştirme ve mülakat hazırlığı alır
+- Başvurularını panoda takip eder
+- Dashboard ve kariyer koçu ile sonraki adımları görür
 
-Yapay zekâ;
+### Yapay zekâ özellikleri
 
-Kullanıcının CV'sini,
-Başvurulan şirketi,
-İlan açıklamasını
+- **CV analizi:** güçlü yönler, eksikler, ATS tahmini, ilan uyumu
+- **AI Başvuru Asistanı:** ön yazı, e-posta, CV iyileştirme, mülakat, motivasyon
+- **AI Kariyer Koçu:** mevcut veriden kural tabanlı kişiselleştirilmiş öneriler
 
-analiz ederek her başvuru için özgün ve kişiselleştirilmiş bir ön yazı oluşturur.
+### Hedef kitle
 
-📄 CV Optimizasyonu
+- Üniversite öğrencileri
+- Yeni mezunlar
+- Zorunlu / gönüllü staj arayanlar
+- Kariyer merkezleri
 
-Başvurulan ilanın beklentilerine göre;
+### Vizyon
 
-Gereksiz bilgiler azaltılır,
-Öne çıkarılması gereken deneyimler belirlenir,
-CV daha etkili hale getirilir.
-🎤 Yapay Zekâ Destekli Mülakat
+InternAI’nin amacı yalnızca ilan listelemek değil; öğrencilerin kariyer yolculuğuna yapay zekâ ile rehberlik eden bir ekosistem oluşturmaktır.
 
-Başvurulan pozisyona göre;
+### Gelecekte planlananlar
 
-Teknik sorular,
-Davranışsal sorular,
-Şirkete özel mülakat senaryoları
+- GitHub / LinkedIn profil analizi
+- Bulut senkronizasyonu
+- Firma paneli ve istatistikler
+- Daha zengin kariyer yol haritası
+- Portföy değerlendirme
 
-oluşturularak kullanıcıların gerçek mülakata hazırlanması sağlanır.
+---
 
-👥 Hedef Kitle
-Üniversite öğrencileri
-Yeni mezunlar
-Zorunlu staj arayan öğrenciler
-Gönüllü staj yapmak isteyen adaylar
-Kariyer merkezleri
-İnsan kaynakları ekipleri
-🌍 Vizyon
+## Proje yönetimi
 
-InternAI'nin amacı, yalnızca staj ilanlarını listeleyen bir platform olmak değil; öğrencilerin kariyer yolculuğuna yapay zekâ ile rehberlik eden akıllı bir kariyer ekosistemi oluşturmaktır.
+Bu proje **tek kişi** tarafından geliştirilmiştir. Ayrıntı: [Takım ve roller](./docs/product/team-and-roles.md)
 
-Platform, her başvuruyu kişiselleştirerek öğrencilerin doğru şirkete, doğru belgelerle ve daha yüksek başarı ihtimaliyle başvurmasını sağlamayı hedeflemektedir.
+| Rol | Kişi |
+|-----|------|
+| Product Owner | Feyza Sağman |
+| Scrum Master | Feyza Sağman |
+| Developer | Feyza Sağman |
 
-🚀 Gelecekte Planlanan Özellikler
-GitHub profil analizi
-LinkedIn profil analizi
-Yapay zekâ destekli kariyer yol haritası
-Sertifika ve eğitim önerileri
-Şirketlere özel başvuru istatistikleri
-İşe alım süreçleri için firma paneli
-Yapay zekâ destekli kariyer danışmanı
-Portföy değerlendirme sistemi
+### Sprint dokümantasyonu
 
-📢 Proje Sloganı
+Tüm süreç belgeleri `docs/` klasöründedir:
 
-"Doğru stajı bul, yapay zekâ ile daha güçlü başvur."
+- [Dokümantasyon ana sayfa](./docs/README.md)
+- [Takım ve roller](./docs/product/team-and-roles.md)
+- [Product Backlog](./docs/product/product-backlog.md)
+- [Ürün vizyonu](./docs/product/product-vision.md)
+- [Ürün özellikleri](./docs/product/product-features.md)
+- [Hedef kitle](./docs/product/target-audience.md)
+
+### Sprint özetleri (altı Bootcamp bölümü)
+
+| Sprint | Hedef | Özet |
+|--------|-------|------|
+| **Sprint 1** | Altyapı ve temel ürün iskeleti | [sprint-1/README.md](./docs/sprint-1/README.md) |
+| **Sprint 2** | CV ve başvuru metni süreçleri | [sprint-2/README.md](./docs/sprint-2/README.md) |
+| **Sprint 3** | Ürün bütünlüğü ve finalizasyon | [sprint-3/README.md](./docs/sprint-3/README.md) |
+
+### Sprint bağlantıları
+
+| Sprint | Belgeler |
+|--------|----------|
+| **Sprint 1** | [Dağıtım](./docs/sprint-1/backlog-distribution.md) · [Planning](./docs/sprint-1/sprint-planning.md) · [Backlog](./docs/sprint-1/sprint-backlog.md) · [Daily](./docs/sprint-1/daily-scrum.md) · [Board](./docs/sprint-1/sprint-board-updates.md) · [Status](./docs/sprint-1/product-status.md) · [Review](./docs/sprint-1/sprint-review.md) · [Retro](./docs/sprint-1/sprint-retrospective.md) · [Screenshots](./docs/sprint-1/screenshots/README.md) |
+| **Sprint 2** | [Dağıtım](./docs/sprint-2/backlog-distribution.md) · [Planning](./docs/sprint-2/sprint-planning.md) · [Backlog](./docs/sprint-2/sprint-backlog.md) · [Daily](./docs/sprint-2/daily-scrum.md) · [Board](./docs/sprint-2/sprint-board-updates.md) · [Status](./docs/sprint-2/product-status.md) · [Review](./docs/sprint-2/sprint-review.md) · [Retro](./docs/sprint-2/sprint-retrospective.md) · [Screenshots](./docs/sprint-2/screenshots/README.md) |
+| **Sprint 3** | [Dağıtım](./docs/sprint-3/backlog-distribution.md) · [Planning](./docs/sprint-3/sprint-planning.md) · [Backlog](./docs/sprint-3/sprint-backlog.md) · [Daily](./docs/sprint-3/daily-scrum.md) · [Board](./docs/sprint-3/sprint-board-updates.md) · [Status](./docs/sprint-3/product-status.md) · [Review](./docs/sprint-3/sprint-review.md) · [Retro](./docs/sprint-3/sprint-retrospective.md) · [Screenshots](./docs/sprint-3/screenshots/README.md) |
+
+### Ürün durumu (özet)
+
+MVP sunuma hazırdır: kimlik doğrulama, staj keşfi, CV analizi, AI asistan, başvuru takibi, dashboard ve kariyer koçu tamamlanmıştır. GitHub/LinkedIn analizi ve firma paneli yapılmamıştır. Ekran görüntüleri her sprintin `screenshots/` klasörüne manuel eklenmelidir (klasörde şu an yalnızca dosya listesi vardır).
+
+### Çalıştırma (web)
+
+```bash
+cd web-admin
+npm install
+npm run dev
+```
+
+Ortam değişkeni: `web-admin/.env.local` içinde `GEMINI_API_KEY` (yalnızca sunucu tarafı).

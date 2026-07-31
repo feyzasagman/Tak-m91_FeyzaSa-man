@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// EventMint — hardened Security Rules (prototype: review before broad release)
+// InternAI — hardened Security Rules (prototype: review before broad release)
 //
 // Assumed roles on users/{uid}: admin | club_manager | student
 // Legacy role strings (kulüp_yöneticisi, manager) treated as club_manager in helpers.
