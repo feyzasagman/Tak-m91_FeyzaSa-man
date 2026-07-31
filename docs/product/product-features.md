@@ -22,13 +22,14 @@ Bu belge, geliştirilmiş ve sunuma hazır durumdaki özellikleri listeler. Yap�
 
 ## Staj ilanları
 
-- Şehir bazlı staj ilanı listesi
+- Temsili demo ilan kataloğu (canlı staj API’si yok)
 - Arama
 - Şehir, alan, çalışma modeli, staj türü filtreleri
 - İlan detay sayfası
 - İlan kaydetme
 - Başvurulara ekleme
 - Uyum skoru gösterimi
+- `getInternships()` veri katmanı — ileride gerçek API’ye bağlanmaya uygun
 
 ## CV analizi
 

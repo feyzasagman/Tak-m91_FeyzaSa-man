@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand";
 import { Chip } from "../ui/chip";
 
 export function AppHeader({
@@ -22,7 +23,14 @@ export function AppHeader({
           >
             ☰
           </button>
-          <div>
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-3 lg:hidden"
+            aria-label="InternAI dashboard"
+          >
+            <BrandLogo variant="icon" size="sm" />
+          </Link>
+          <div className="hidden sm:block">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
               InternAI
             </p>

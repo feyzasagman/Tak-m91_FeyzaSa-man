@@ -1,18 +1,21 @@
 # Sprint 2 — Ekran Görüntüleri
 
-Bu klasöre aşağıdaki ekran görüntülerini ekleyin.
+README ve jüri sunumu için seçilen kaliteli görseller:
 
-| Dosya adı (önerilen) | İçerik |
-|----------------------|--------|
-| `01-cv-upload.png` | PDF seçme / yükleme alanı |
-| `02-cv-analysis.png` | AI CV analiz sonucu (skorlar görünür) |
-| `03-ai-assistant.png` | AI Başvuru Asistanı (üretim sonucu ile) |
+| Dosya | İçerik |
+|-------|--------|
+| [resume-upload.png](./resume-upload.png) | CV PDF yükleme |
+| [resume-text-review.png](./resume-text-review.png) | Çıkarılan metin kontrolü |
+| [resume-score.png](./resume-score.png) | Genel CV skoru + ATS tahmini |
+| [resume-analysis-result.png](./resume-analysis-result.png) | AI analiz sonucu / başvuru önerisi |
+| [resume-skills.png](./resume-skills.png) | Eşleşen beceriler ve bölüm skorları |
+| [resume-section-scores.png](./resume-section-scores.png) | Bölüm bazlı skorlar (detay) |
+| [resume-recommendations.png](./resume-recommendations.png) | Öncelikli öneriler |
+| [application-assistant.png](./application-assistant.png) | AI Başvuru Asistanı (ön yazı modu) |
 
-## Nasıl alınır?
+## Bu sette eksik olanlar
 
-1. `GEMINI_API_KEY` tanımlı ortamda veya geliştirme yedeği ile çalıştırın
-2. `/resume-analysis` üzerinde PDF yükleyip analiz alın
-3. `/ai-assistant` üzerinde bir modda metin üretin
-4. Ekran görüntülerini bu klasöre kaydedin
+- Ayrı “cover-letter” üretim sonucu ekranı (form/boş sonuç paneli mevcut)
+- Ayrı “ilan uyum skoru” kartı kırpımı (analiz sonucu içinde geçiyor)
 
-> **Durum:** Bu klasörde şu an gerçek görsel dosyası yoktur. Yalnızca eklenecek dosya listesi vardır; otomatik veya sahte görsel üretilmez.
+> Görseller yeniden boyutlandırılmadı / kalite düşürülmedi.

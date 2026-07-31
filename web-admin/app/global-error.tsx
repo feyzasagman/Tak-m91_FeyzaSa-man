@@ -1,5 +1,7 @@
 "use client";
 
+import { BrandLogo } from "@/components/brand";
+
 export default function GlobalError({
   error,
   reset,
@@ -11,9 +13,9 @@ export default function GlobalError({
     <html lang="tr">
       <body className="flex min-h-screen items-center justify-center bg-[#020617] px-6 text-white">
         <section className="w-full max-w-lg text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-300">
-            InternAI
-          </p>
+          <div className="mb-6 flex justify-center">
+            <BrandLogo variant="dark" size="md" showTagline />
+          </div>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight">
             Bir şeyler ters gitti
           </h1>

@@ -1,22 +1,18 @@
+"use client";
+
 import { PageHeader } from "@/app/components/layout/PageHeader";
 import { Input } from "@/app/components/ui/input";
 import { SectionCard } from "@/app/components/ui/section-card";
-
-function TogglePlaceholder({ label, description }: { label: string; description: string }) {
-  return (
-    <div className="flex items-center justify-between gap-4 rounded-2xl bg-surface2 p-4">
-      <div>
-        <p className="text-sm font-medium">{label}</p>
-        <p className="mt-1 text-xs leading-5 text-text2">{description}</p>
-      </div>
-      <span className="relative h-6 w-11 shrink-0 rounded-full bg-border">
-        <span className="absolute left-1 top-1 size-4 rounded-full bg-text2" />
-      </span>
-    </div>
-  );
-}
+import { useNotificationSettings } from "../hooks/useNotificationSettings";
+import { NOTIFICATION_SETTING_FIELDS } from "../types/notification-settings";
+import { NotificationSwitch } from "./NotificationSwitch";
 
 export function SettingsWorkspace() {
+  const { settings, loading, saving, error, setPreference } =
+    useNotificationSettings();
+
+  const switchesDisabled = loading || saving;
+
   return (
     <section className="space-y-7">
       <PageHeader
@@ -45,20 +41,34 @@ export function SettingsWorkspace() {
           </div>
         </SectionCard>
 
-        <SectionCard title="Bildirim tercihleri">
+        <SectionCard
+          title="Bildirim tercihleri"
+          description="Tercihler hesabına kaydedilir. Push bildirim gönderimi MVP kapsamı dışındadır."
+        >
           <div className="space-y-3">
-            <TogglePlaceholder
-              label="Yeni staj ilanları"
-              description="Tercihlerine uygun ilanlardan haberdar ol."
-            />
-            <TogglePlaceholder
-              label="Başvuru hatırlatmaları"
-              description="Bekleyen adımlar için bildirim al."
-            />
-            <TogglePlaceholder
-              label="AI kariyer önerileri"
-              description="Kişiselleştirilmiş gelişim önerilerini gör."
-            />
+            {NOTIFICATION_SETTING_FIELDS.map((field) => (
+              <NotificationSwitch
+                key={field.key}
+                id={`notification-${field.key}`}
+                label={field.label}
+                description={field.description}
+                checked={settings[field.key]}
+                disabled={switchesDisabled}
+                onChange={(next) => {
+                  void setPreference(field.key, next);
+                }}
+              />
+            ))}
+            {loading && (
+              <p className="text-xs text-text2" role="status">
+                Tercihler yükleniyor...
+              </p>
+            )}
+            {error && !loading && (
+              <p className="text-xs text-red-300" role="alert">
+                {error}
+              </p>
+            )}
           </div>
         </SectionCard>
 
@@ -68,7 +78,9 @@ export function SettingsWorkspace() {
               <div
                 key={theme}
                 className={`rounded-2xl border p-4 ${
-                  index === 1 ? "border-brand bg-brand/10" : "border-border bg-surface2"
+                  index === 1
+                    ? "border-brand bg-brand/10"
+                    : "border-border bg-surface2"
                 }`}
               >
                 <p className="text-sm font-semibold">{theme}</p>

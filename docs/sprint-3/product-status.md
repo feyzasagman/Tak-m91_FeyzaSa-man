@@ -52,15 +52,14 @@ Bootcamp sonrası / post-MVP:
 - Ayarlar kalıcı kayıt
 - PB-11 (GitHub/LinkedIn) ve PB-12 (firma paneli) için ayrı epik kırılımı
 
-## Eklenecek ekran görüntüleri
+## Ekran görüntüleri
 
-Gerçek PNG dosyaları henüz yoktur; aşağıdaki dosyalar `screenshots/` klasörüne manuel eklenmelidir.
+Mevcut dosyalar: [screenshots/README.md](./screenshots/README.md)
 
 | Dosya | İçerik |
 |-------|--------|
-| `01-applications.png` | Başvurularım liste / özet |
-| `02-kanban.png` | Kanban panosu |
-| `03-career-coach.png` | Dashboard’da AI Kariyer Koçu |
-| `04-final-dashboard.png` | Final dashboard (istatistik + hızlı işlemler) |
+| `final-dashboard.png` | Final dashboard |
+| `applications.png` | Başvurularım / Kanban |
+| `settings.png` | Ayarlar + bildirim tercihleri |
 
-Ayrıntı: [screenshots/README.md](./screenshots/README.md)
+Eksik: kariyer koçu ayrı kırpım, başvuru detay/timeline, responsive. Bildirimler için kopya: `docs/duplicates/notifications.png`.

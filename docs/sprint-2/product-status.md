@@ -50,14 +50,15 @@ Sprint 2 sonunda ürün **keşif + CV + AI metin** döngüsünde stabildir. Gemi
 - Dashboard veri birleşimi + AI Kariyer Koçu
 - Global UX / güvenlik polish ve süreç dokümantasyonu
 
-## Eklenecek ekran görüntüleri
+## Ekran görüntüleri
 
-Gerçek PNG dosyaları henüz yoktur; aşağıdaki dosyalar `screenshots/` klasörüne manuel eklenmelidir.
+Mevcut dosyalar: [screenshots/README.md](./screenshots/README.md)
 
 | Dosya | İçerik |
 |-------|--------|
-| `01-cv-upload.png` | PDF seçme / yükleme alanı |
-| `02-cv-analysis.png` | AI CV analiz sonucu (skorlar görünür) |
-| `03-ai-assistant.png` | AI Başvuru Asistanı (üretim sonucu ile) |
+| `resume-upload.png` | CV PDF yükleme |
+| `resume-score.png` | CV / ATS skorları |
+| `resume-analysis-result.png` | AI analiz sonucu |
+| `application-assistant.png` | AI Başvuru Asistanı |
 
-Ayrıntı: [screenshots/README.md](./screenshots/README.md)
+Diğer kırpımlar: text-review, skills, section-scores, recommendations.

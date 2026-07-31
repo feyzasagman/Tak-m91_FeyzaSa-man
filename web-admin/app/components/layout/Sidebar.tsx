@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandLogo } from "@/components/brand";
 import { platformNavigation } from "./navigation";
 
 export function Sidebar({
@@ -21,14 +22,13 @@ export function Sidebar({
           : "fixed inset-y-0 left-0 hidden w-[280px] flex-col border-r border-border bg-surface/95 p-5 backdrop-blur lg:flex"
       }
     >
-      <Link href="/" onClick={onNavigate} className="flex items-center gap-3 px-2">
-        <span className="flex size-11 items-center justify-center rounded-2xl bg-brand font-bold text-white shadow-lg shadow-brand/20">
-          AI
-        </span>
-        <span>
-          <span className="block font-semibold">InternAI</span>
-          <span className="block text-xs text-text2">Kariyer Platformu</span>
-        </span>
+      <Link
+        href="/"
+        onClick={onNavigate}
+        className="flex min-h-11 items-center px-1"
+        aria-label="InternAI ana sayfa"
+      >
+        <BrandLogo variant="dark" size="md" showTagline />
       </Link>
 
       <nav className="mt-9 flex-1 space-y-1.5" aria-label="Platform navigasyonu">

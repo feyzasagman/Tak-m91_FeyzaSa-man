@@ -234,7 +234,7 @@ export function buildRecommendations(input: {
       id: "keep-exploring",
       title: "Yeni fırsatları keşfet",
       description:
-        "Profilin güncel. Yeni staj ilanlarını inceleyerek sürecini sürdürebilirsin.",
+        "Profilin güncel. Demo katalogdaki ilanları inceleyerek sürecini sürdürebilirsin.",
       href: "/internships",
       actionLabel: "Stajları Keşfet",
     });

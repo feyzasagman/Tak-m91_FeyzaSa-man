@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand";
 
 export function AuthCard({
   isRegister,
@@ -36,11 +37,11 @@ export function AuthCard({
       className="w-full max-w-[430px] rounded-[30px] border border-white/10 bg-white/[0.08] p-8 text-white shadow-2xl shadow-black/40 backdrop-blur-2xl"
     >
       <div className="mb-7 text-center">
-        <div className="mx-auto mb-4 flex size-[72px] items-center justify-center rounded-3xl bg-indigo-500 text-2xl font-bold shadow-lg shadow-indigo-500/25">
-          AI
+        <div className="mx-auto mb-5 flex justify-center">
+          <BrandLogo variant="dark" size="lg" showTagline priority />
         </div>
-        <h1 className="text-3xl font-semibold tracking-tight">InternAI</h1>
-        <p className="mt-2 text-sm text-slate-300">
+        <h1 className="sr-only">{isRegister ? "Kayıt Ol" : "Giriş Yap"}</h1>
+        <p className="mt-1 text-sm text-slate-300">
           {isRegister ? "Yeni hesap oluştur" : "Hesabına giriş yap"}
         </p>
       </div>

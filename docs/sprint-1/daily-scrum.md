@@ -51,7 +51,7 @@
 - **Dün ne yaptım?** Auth’u stabilize ettim.
 - **Bugün ne yapacağım?** Dashboard iskeleti + staj ilanı veri modeli.
 - **Engeller:** Yok.
-- **Kararlar:** İlanlar için yerel örnek veri seti (arayüzde geliştirme etiketi yok).
+- **Kararlar:** İlanlar için yerel temsili demo veri seti; canlı API yok.
 - **Tamamlanan işler:** Dashboard route; internship types.
 </details>
 

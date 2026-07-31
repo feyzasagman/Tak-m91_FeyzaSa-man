@@ -16,9 +16,16 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "InternAI | Yapay Zekâ Destekli Staj Platformu",
-  description:
-    "Şehir bazlı staj ilanlarını keşfet, CV’ni yapay zekâ ile analiz et ve her başvuru için kişiselleştirilmiş metinler oluştur.",
+  description: "Doğru stajı bul, yapay zekâ ile daha güçlü başvur.",
   applicationName: "InternAI",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/brand/internai-icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/brand/internai-icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({

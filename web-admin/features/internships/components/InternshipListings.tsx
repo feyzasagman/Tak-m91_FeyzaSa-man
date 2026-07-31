@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { PageHeader } from "@/app/components/layout/PageHeader";
 import { useToast } from "@/app/providers/ToastProvider";
-import { internships } from "../data/internships";
+import { getInternships } from "../data/internships";
 import { useSavedInternships } from "../hooks/useSavedInternships";
 import {
   emptyInternshipFilters,
@@ -22,6 +22,7 @@ export function InternshipListings() {
     emptyInternshipFilters
   );
   const { isSaved, toggleSaved } = useSavedInternships();
+  const catalog = getInternships();
 
   const handleToggleSaved = (id: string) => {
     const result = toggleSaved(id);
@@ -38,8 +39,8 @@ export function InternshipListings() {
   };
 
   const results = useMemo(
-    () => filterInternships(internships, searchTerm, filters),
-    [filters, searchTerm]
+    () => filterInternships(catalog, searchTerm, filters),
+    [catalog, filters, searchTerm]
   );
 
   const clearAll = () => {
@@ -50,10 +51,19 @@ export function InternshipListings() {
   return (
     <section className="space-y-7">
       <PageHeader
-        eyebrow="Fırsatları keşfet"
+        eyebrow="Demo katalog"
         title="Staj İlanları"
-        description="Şehir, alan ve çalışma modeline göre sana uygun staj fırsatlarını keşfet."
+        description="MVP’de temsili demo ilanlarla keşif, filtreleme ve başvuru akışını dene. Canlı staj API’si henüz bağlı değildir."
       />
+
+      <p
+        className="rounded-2xl border border-border bg-surface2/70 px-4 py-3 text-sm leading-6 text-text2"
+        role="note"
+      >
+        Gösterilen ilanlar gerçek zamanlı açık pozisyon değildir; ürün
+        deneyimini anlatmak için hazırlanmış örnek veridir. Veri katmanı ileride
+        gerçek bir API kaynağına taşınabilir.
+      </p>
 
       <InternshipSearch value={searchTerm} onChange={setSearchTerm} />
 
@@ -67,9 +77,10 @@ export function InternshipListings() {
         <div>
           <div className="mb-4 flex items-center justify-between gap-4">
             <p className="text-sm font-medium">
-              <span className="text-brand">{results.length}</span> staj ilanı bulundu
+              <span className="text-brand">{results.length}</span> demo ilan
+              listelendi
             </p>
-            {(searchTerm || results.length !== internships.length) && (
+            {(searchTerm || results.length !== catalog.length) && (
               <button
                 type="button"
                 onClick={clearAll}

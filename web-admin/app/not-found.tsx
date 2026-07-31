@@ -1,10 +1,14 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand";
 import { ROUTES } from "@/lib/routes";
 
 export default function NotFound() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-bg px-6 text-text">
       <section className="w-full max-w-lg text-center">
+        <div className="mb-6 flex justify-center">
+          <BrandLogo variant="dark" size="md" showTagline />
+        </div>
         <p className="text-sm font-semibold uppercase tracking-[0.24em] text-brand">
           404
         </p>

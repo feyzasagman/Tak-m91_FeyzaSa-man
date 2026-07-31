@@ -23,6 +23,7 @@ Bu proje **tek kişi** tarafından geliştirilmektedir. Ayrıntı: [product/team
 | Hedef kitle | [product/target-audience.md](./product/target-audience.md) |
 | Ürün özellikleri | [product/product-features.md](./product/product-features.md) |
 | Product Backlog | [product/product-backlog.md](./product/product-backlog.md) |
+| Marka / branding | [branding/README.md](./branding/README.md) |
 
 ## Sprint özetleri (altı bölüm)
 
@@ -49,8 +50,16 @@ Bu proje **tek kişi** tarafından geliştirilmektedir. Ayrıntı: [product/team
 5. Sprint Review (planlanan / tamamlanan / yetişmeyen / aktarılan)  
 6. Sprint Retrospective + Action Items tablosu  
 
+## Ekran görüntüleri
+
+- [Organizasyon raporu](./screenshots-organization-report.md)
+- [Sprint 1 screenshots](./sprint-1/screenshots/README.md)
+- [Sprint 2 screenshots](./sprint-2/screenshots/README.md)
+- [Sprint 3 screenshots](./sprint-3/screenshots/README.md)
+- [Duplicates](./duplicates/README.md)
+- [Needs review](./needs-review/README.md)
+
 ## Dürüstlük notu
 
 - Yapılmayan özellikler (GitHub/LinkedIn analizi, firma paneli, ayarlar kalıcı kayıt) Done yazılmaz.
-- Screenshots klasörlerinde gerçek görsel yoksa yalnızca eklenecek dosya listesi bulunur.
 - Daily Scrum tarihlerinde emin olunmayan yerlerde *tarih doğrulanmalı* notu vardır.

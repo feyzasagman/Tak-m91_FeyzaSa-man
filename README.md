@@ -8,6 +8,10 @@ Ekip arkadaşlarım ile formu doldurduktan sonra iletişim kuramadım; mesajlara
 
 ## InternAI – Yapay Zekâ Destekli Akıllı Staj Platformu
 
+<p align="center">
+  <img src="./web-admin/public/brand/internai-logo-light.svg" alt="InternAI logo" width="280" />
+</p>
+
 ### Proje hakkında
 
 InternAI, üniversite öğrencileri ve yeni mezunların staj başvuru süreçlerini daha hızlı, bilinçli ve başarılı yönetmelerini sağlayan yapay zekâ destekli bir kariyer platformudur.
@@ -15,6 +19,14 @@ InternAI, üniversite öğrencileri ve yeni mezunların staj başvuru süreçler
 Geleneksel staj platformları çoğunlukla ilan listelemekle sınırlıyken InternAI; şehir bazlı ilan keşfi, CV analizi, ilan–CV uyumu, ilana özel başvuru metinleri, mülakat hazırlığı ve başvuru takibini tek çalışma alanında birleştirir.
 
 **Slogan:** Doğru stajı bul, yapay zekâ ile daha güçlü başvur.
+
+### Veri kaynağı (şeffaflık)
+
+MVP’de staj ilanları **temsili demo verisidir**; canlı bir staj API’sinden veya güncel açık pozisyonlardan çekilmez. Amaç keşif, filtre, CV uyumu ve başvuru akışını ürün üzerinde göstermektir.
+
+Veri erişimi `web-admin/features/internships/data/internships.ts` içindeki `getInternships()` / `getInternshipById()` üzerinden yapılır; bu katman ileride gerçek bir API entegrasyonuna taşınmaya uygundur.
+
+Marka dosyaları ve tasarım referansı: [docs/branding/README.md](./docs/branding/README.md)
 
 ### Problem
 

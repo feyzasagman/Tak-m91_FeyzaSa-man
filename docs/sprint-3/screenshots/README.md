@@ -1,19 +1,18 @@
 # Sprint 3 — Ekran Görüntüleri
 
-Bu klasöre aşağıdaki ekran görüntülerini ekleyin.
+README ve jüri sunumu için seçilen kaliteli görseller:
 
-| Dosya adı (önerilen) | İçerik |
-|----------------------|--------|
-| `01-applications.png` | Başvurularım liste / özet |
-| `02-kanban.png` | Kanban panosu |
-| `03-career-coach.png` | Dashboard’da AI Kariyer Koçu |
-| `04-final-dashboard.png` | Final dashboard (istatistik + hızlı işlemler) |
+| Dosya | İçerik |
+|-------|--------|
+| [final-dashboard.png](./final-dashboard.png) | Final dashboard (istatistik + hızlı işlemler) |
+| [applications.png](./applications.png) | Başvurularım / Kanban |
+| [settings.png](./settings.png) | Ayarlar + bildirim tercihleri |
 
-## Nasıl alınır?
+## Bu sette eksik olanlar
 
-1. Birkaç başvuru ve CV analizi oluşturun
-2. `/applications` ve `/dashboard` sayfalarını açın
-3. Tam sayfa ekran görüntüsü alın
-4. Dosyaları bu klasöre koyun
+- Başvuru detay drawer / timeline ayrı ekranı
+- AI Kariyer Koçu paneli ayrı kırpımı
+- Mobil / responsive özel görsel
+- `notifications.png` ayrı dosya: aynı ekran `settings.png` içinde; kopya `docs/duplicates/notifications.png`
 
-> **Durum:** Bu klasörde şu an gerçek görsel dosyası yoktur. Yalnızca eklenecek dosya listesi vardır; otomatik veya sahte görsel üretilmez.
+> Görseller yeniden boyutlandırılmadı / kalite düşürülmedi.

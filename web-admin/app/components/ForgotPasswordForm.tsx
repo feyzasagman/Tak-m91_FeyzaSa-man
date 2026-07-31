@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { BrandLogo } from "@/components/brand";
 import { auth } from "@/lib/firebase";
 import { getFirebaseAuthErrorMessage } from "@/lib/firebase/auth-errors";
 
@@ -46,8 +47,8 @@ export function ForgotPasswordForm() {
           className="rounded-[30px] border border-white/10 bg-white/[0.08] p-8 text-white shadow-2xl shadow-black/40 backdrop-blur-2xl"
         >
           <div className="text-center">
-            <div className="mx-auto mb-4 flex size-[72px] items-center justify-center rounded-3xl bg-indigo-500 text-2xl font-bold shadow-lg shadow-indigo-500/25">
-              AI
+            <div className="mx-auto mb-5 flex justify-center">
+              <BrandLogo variant="dark" size="lg" showTagline priority />
             </div>
             <h1 className="text-3xl font-semibold tracking-tight">
               Şifrenizi Sıfırlayın

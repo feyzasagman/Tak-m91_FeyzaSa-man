@@ -1,0 +1,23 @@
+{
+  "name": "InternAI",
+  "short_name": "InternAI",
+  "description": "Doğru stajı bul, yapay zekâ ile daha güçlü başvur.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1020",
+  "theme_color": "#0B1020",
+  "icons": [
+    {
+      "src": "/brand/internai-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon",
+      "purpose": "any"
+    }
+  ]
+}

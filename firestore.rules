@@ -85,6 +85,17 @@ service cloud.firestore {
           == resource.data.get('banned', false);
     }
 
+    function isValidNotificationSettings() {
+      return request.resource.data.keys().hasOnly([
+          'newInternships',
+          'applicationReminders',
+          'aiCareerSuggestions'
+        ])
+        && request.resource.data.newInternships is bool
+        && request.resource.data.applicationReminders is bool
+        && request.resource.data.aiCareerSuggestions is bool;
+    }
+
     // ===============================================================
     // users
     // ===============================================================
@@ -101,6 +112,17 @@ service cloud.firestore {
         || (isSelf(uid) && selfUserUpdateAllowed() && privilegedUserFieldsUnchanged());
 
       allow delete: if isAdmin();
+
+      // users/{uid}/settings/notifications — bildirim tercihleri (MVP)
+      match /settings/{settingId} {
+        allow read: if isAuth() && (isSelf(uid) || isAdmin());
+
+        allow create, update: if isSelf(uid)
+          && settingId == 'notifications'
+          && isValidNotificationSettings();
+
+        allow delete: if isAdmin();
+      }
     }
 
     // ===============================================================

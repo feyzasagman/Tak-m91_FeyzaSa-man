@@ -51,14 +51,16 @@ Sprint 1 sonunda ürün **iskelet + staj keşfi** seviyesinde stabildir. Auth ve
 - Gemini ile CV–ilan analizi
 - AI Başvuru Asistanı
 
-## Eklenecek ekran görüntüleri
+## Ekran görüntüleri
 
-Gerçek PNG dosyaları henüz yoktur; aşağıdaki dosyalar `screenshots/` klasörüne manuel eklenmelidir.
+Mevcut dosyalar: [screenshots/README.md](./screenshots/README.md)
 
 | Dosya | İçerik |
 |-------|--------|
-| `01-dashboard.png` | Dashboard iskeleti / hoş geldin alanı |
-| `02-internships.png` | Staj ilanları listesi (filtre görünür) |
-| `03-internship-detail.png` | İlan detay sayfası |
+| `landing-page.png` | Ana sayfa |
+| `login.png` | Giriş |
+| `register.png` | Kayıt |
+| `internships.png` | Staj ilanları |
+| `profile.png` | Profil |
 
-Ayrıntı: [screenshots/README.md](./screenshots/README.md)
+Eksik: ilan detay; erken dashboard (bkz. Sprint 3 `final-dashboard.png`).

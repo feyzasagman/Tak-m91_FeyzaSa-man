@@ -1,6 +1,16 @@
 import type { Internship } from "../types";
 
-export const internships: Internship[] = [
+/**
+ * MVP staj veri katmanı — temsili demo ilanları.
+ *
+ * Bu liste canlı bir staj API’sinden gelmez; ürün akışını göstermek için
+ * yerelde tutulan örnek veridir. Gerçek / güncel açık pozisyon iddiası taşımaz.
+ *
+ * Gelecek entegrasyon: `getInternships()` ve `getInternshipById()` imzaları
+ * korunarak REST veya Firestore kaynağına bağlanabilir. UI bu fonksiyonlar
+ * üzerinden tüketmeye devam edebilir.
+ */
+export const DEMO_INTERNSHIPS: Internship[] = [
   {
     id: "turkcell-frontend-intern",
     company: "Turkcell",
@@ -255,6 +265,13 @@ export const internships: Internship[] = [
   },
 ];
 
+/** Geriye uyumluluk; yeni kod `getInternships()` kullanmalıdır. */
+export const internships = DEMO_INTERNSHIPS;
+
+export function getInternships(): Internship[] {
+  return DEMO_INTERNSHIPS;
+}
+
 export function getInternshipById(id: string) {
-  return internships.find((internship) => internship.id === id);
+  return DEMO_INTERNSHIPS.find((internship) => internship.id === id);
 }

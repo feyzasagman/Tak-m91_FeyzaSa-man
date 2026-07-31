@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand";
 
 const features = [
   {
@@ -9,10 +10,10 @@ const features = [
   {
     icon: "⌖",
     title: "Şehir Bazlı Stajlar",
-    text: "Hedeflediğin şehirlerdeki staj fırsatlarını keşfet.",
+    text: "Demo katalogda şehir ve alan filtreleriyle ilan keşfini dene.",
   },
   {
-    icon: "AI",
+    icon: "✦",
     title: "Başvuru Asistanı",
     text: "Her ilana özel, kişiselleştirilmiş başvuru metinleri oluştur.",
   },
@@ -26,17 +27,21 @@ export default function Home() {
       <div className="absolute -right-24 bottom-10 size-96 rounded-full bg-blue-500/10 blur-3xl" />
 
       <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-[1000px] flex-col">
-        <nav className="mb-12 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-3">
-            <span className="flex size-12 items-center justify-center rounded-2xl bg-violet-500 text-lg font-bold shadow-lg shadow-violet-500/30">
-              AI
-            </span>
-            <span>
-              <span className="block text-xl font-semibold tracking-tight">InternAI</span>
-              <span className="block text-xs font-medium uppercase tracking-[0.2em] text-violet-200/80">
-                Kariyer Platformu
-              </span>
-            </span>
+        <nav className="mb-12 flex h-12 items-center justify-between gap-4">
+          <Link href="/" className="inline-flex items-center" aria-label="InternAI ana sayfa">
+            <BrandLogo
+              variant="icon"
+              size="md"
+              className="sm:hidden"
+              priority
+            />
+            <BrandLogo
+              variant="dark"
+              size="md"
+              showTagline
+              className="hidden sm:block"
+              priority
+            />
           </Link>
           <div className="flex items-center gap-2">
             <Link

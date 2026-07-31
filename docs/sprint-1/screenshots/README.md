@@ -1,18 +1,18 @@
 # Sprint 1 — Ekran Görüntüleri
 
-Bu klasöre jüri sunumu için aşağıdaki ekran görüntülerini ekleyin.
+README ve jüri sunumu için seçilen kaliteli görseller:
 
-| Dosya adı (önerilen) | İçerik |
-|----------------------|--------|
-| `01-dashboard.png` | Dashboard iskeleti / hoş geldin alanı |
-| `02-internships.png` | Staj ilanları listesi (filtre görünür) |
-| `03-internship-detail.png` | İlan detay sayfası |
+| Dosya | İçerik |
+|-------|--------|
+| [landing-page.png](./landing-page.png) | Ana sayfa / landing |
+| [login.png](./login.png) | Giriş |
+| [register.png](./register.png) | Kayıt |
+| [internships.png](./internships.png) | Staj ilanları (demo katalog) |
+| [profile.png](./profile.png) | Profil |
 
-## Nasıl alınır?
+## Bu sette eksik olanlar
 
-1. `web-admin` içinde `npm run dev`
-2. Giriş yapın
-3. İlgili sayfayı açın
-4. Tam sayfa ekran görüntüsü kaydedin
+- İlan detay sayfası görseli bu batch’te yok
+- Erken dönem “iskelet dashboard” ayrı dosya olarak yok; güncel dashboard Sprint 3 `final-dashboard.png` altında
 
-> **Durum:** Bu klasörde şu an gerçek görsel dosyası yoktur. Yalnızca eklenecek dosya listesi vardır; otomatik veya sahte görsel üretilmez.
+> Görseller yeniden boyutlandırılmadı / kalite düşürülmedi.
