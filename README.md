@@ -345,4 +345,10 @@ Ayrıntı: [docs/product/team-and-roles.md](./docs/product/team-and-roles.md)
 
 ## 📝 Proje Geliştirme Notu
 
-Bu teslim, Bootcamp sürecinde **Takım 91** ürünü olarak bu depoda tamamlanmıştır. Geliştirme, Product Owner / Scrum Master / Developer rollerinin aynı kişi tarafından yürütüldüğü tek kişilik Scrum düzeninde yapılmıştır. Süreç belgeleri `docs/` altında yer alır.
+Bootcamp başlangıcında ekip için oluşturulan ortak repository:
+
+https://github.com/melismert805-ui/YZTA--Team-91
+
+Süreç boyunca ekip üyeleriyle sürdürülebilir iletişim kurulamamış, mesajlara düzenli geri dönüş alınamamış ve ortak repository erişimi sağlanamamıştır. Bu nedenle proje, teslim sürekliliğini korumak amacıyla **bu repository** üzerinden bireysel olarak tamamlanmıştır.
+
+Ürün geliştirme, sprint planlama, backlog yönetimi, dokümantasyon, test, Firebase yapılandırması ve canlıya alma süreçleri **Feyza Sağman** tarafından yürütülmüştür.
