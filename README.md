@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./web-admin/public/brand/internai-logo-light.svg" alt="InternAI logo" width="320" />
+  <img src="./web-admin/public/brand/internai-logo-light-v2.svg" alt="InternAI — Kariyer Platformu" width="320" />
 </p>
 
 <h1 align="center">InternAI</h1>
@@ -155,7 +155,7 @@ YZTA_BOOTCAMP_TAKIM91/
     │   ├── resume-analysis/
     │   └── settings/
     ├── lib/                      # Firebase, AI, routes
-    ├── public/brand/             # SVG logo & favicon
+    ├── public/brand/             # SVG logo (v2) & favicon
     ├── .env.example
     └── package.json
 ```

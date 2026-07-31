@@ -14,26 +14,29 @@ type BrandLogoProps = {
 const SIZE_MAP = {
   sm: {
     icon: { width: 28, height: 28 },
-    full: { width: 140, height: 32 },
-    fullWithTagline: { width: 168, height: 38 },
+    wordmark: "text-base",
+    tagline: "text-[0.55rem]",
   },
   md: {
     icon: { width: 36, height: 36 },
-    full: { width: 176, height: 40 },
-    fullWithTagline: { width: 208, height: 46 },
+    wordmark: "text-xl",
+    tagline: "text-[0.62rem]",
   },
   lg: {
     icon: { width: 48, height: 48 },
-    full: { width: 220, height: 50 },
-    fullWithTagline: { width: 260, height: 58 },
+    wordmark: "text-2xl",
+    tagline: "text-[0.7rem]",
   },
 } as const;
 
-const SRC: Record<BrandLogoVariant, string> = {
-  dark: "/brand/internai-logo-dark.svg",
-  light: "/brand/internai-logo-light.svg",
+/** Cache-busting v2 assets; slogan uses XML entity KAR&#x0130;YER in SVG. */
+const SRC = {
+  dark: "/brand/internai-logo-dark-v2.svg",
+  light: "/brand/internai-logo-light-v2.svg",
   icon: "/brand/internai-icon.svg",
-};
+} as const;
+
+const TAGLINE = "KARİYER PLATFORMU";
 
 export function BrandLogo({
   variant = "dark",
@@ -42,62 +45,80 @@ export function BrandLogo({
   className = "",
   priority = false,
 }: BrandLogoProps) {
+  const dims = SIZE_MAP[size];
+
   if (variant === "icon") {
-    const dims = SIZE_MAP[size].icon;
     return (
       <Image
         src={SRC.icon}
         alt="InternAI"
-        width={dims.width}
-        height={dims.height}
+        width={dims.icon.width}
+        height={dims.icon.height}
         priority={priority}
         className={`block shrink-0 ${className}`.trim()}
       />
     );
   }
 
-  if (!showTagline) {
-    const iconDims = SIZE_MAP[size].icon;
+  // Prefer composited HTML tagline so Turkish İ never depends on SVG text rasterization.
+  if (showTagline) {
     const wordmarkClass =
       variant === "light" ? "text-[#0F172A]" : "text-[#F8FAFC]";
+    const taglineClass =
+      variant === "light" ? "text-[#7C3AED]" : "text-[#A78BFA]";
 
     return (
       <span
         className={`inline-flex items-center gap-2.5 ${className}`.trim()}
-        aria-label="InternAI"
+        aria-label={`InternAI ${TAGLINE}`}
       >
         <Image
           src={SRC.icon}
           alt=""
-          width={iconDims.width}
-          height={iconDims.height}
+          width={dims.icon.width}
+          height={dims.icon.height}
           priority={priority}
           className="block shrink-0"
           aria-hidden
         />
-        <span
-          className={`text-[1.05em] font-semibold tracking-tight ${wordmarkClass}`}
-          style={{
-            fontSize:
-              size === "sm" ? "1rem" : size === "lg" ? "1.5rem" : "1.2rem",
-          }}
-        >
-          InternAI
+        <span className="flex min-w-0 flex-col leading-tight">
+          <span
+            className={`font-semibold tracking-tight ${dims.wordmark} ${wordmarkClass}`}
+          >
+            InternAI
+          </span>
+          <span
+            className={`mt-0.5 font-semibold uppercase tracking-[0.22em] ${dims.tagline} ${taglineClass}`}
+          >
+            {TAGLINE}
+          </span>
         </span>
       </span>
     );
   }
 
-  const dims = SIZE_MAP[size].fullWithTagline;
+  const wordmarkClass =
+    variant === "light" ? "text-[#0F172A]" : "text-[#F8FAFC]";
 
   return (
-    <Image
-      src={SRC[variant]}
-      alt="InternAI — Kariyer Platformu"
-      width={dims.width}
-      height={dims.height}
-      priority={priority}
-      className={`block h-auto max-w-full shrink-0 ${className}`.trim()}
-    />
+    <span
+      className={`inline-flex items-center gap-2.5 ${className}`.trim()}
+      aria-label="InternAI"
+    >
+      <Image
+        src={SRC.icon}
+        alt=""
+        width={dims.icon.width}
+        height={dims.icon.height}
+        priority={priority}
+        className="block shrink-0"
+        aria-hidden
+      />
+      <span
+        className={`font-semibold tracking-tight ${dims.wordmark} ${wordmarkClass}`}
+      >
+        InternAI
+      </span>
+    </span>
   );
 }
