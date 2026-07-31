@@ -1,79 +1,257 @@
-# TAKIM 91 — Feyza Sağman
+<p align="center">
+  <img src="./web-admin/public/brand/internai-logo-light.svg" alt="InternAI logo" width="320" />
+</p>
 
-Diğer GitHub reposu: https://github.com/melismert805-ui/YZTA--Team-91  
+<h1 align="center">InternAI</h1>
 
-Ekip arkadaşlarım ile formu doldurduktan sonra iletişim kuramadım; mesajlara dönüş alamadım ve ilgili GitHub reposuna Scrum Master tarafından eklenmediğim için süreci **bu repoda tek başıma** tamamlıyorum.
+<p align="center">
+  <strong>Yapay zekâ destekli akıllı staj ve kariyer platformu</strong>
+</p>
+
+<p align="center">
+  Doğru stajı bul, yapay zekâ ile daha güçlü başvur.
+</p>
+
+<p align="center">
+  <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=nextdotjs" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+  <img alt="Firebase" src="https://img.shields.io/badge/Firebase-Auth%20%7C%20Firestore-FFCA28?style=flat-square&logo=firebase&logoColor=black" />
+  <img alt="Gemini AI" src="https://img.shields.io/badge/Gemini-AI-8E75B2?style=flat-square&logo=googlegemini&logoColor=white" />
+  <img alt="Vercel" src="https://img.shields.io/badge/Deploy-Vercel-000000?style=flat-square&logo=vercel&logoColor=white" />
+</p>
 
 ---
 
-## InternAI – Yapay Zekâ Destekli Akıllı Staj Platformu
+## 🌐 Live Demo
 
-<p align="center">
-  <img src="./web-admin/public/brand/internai-logo-light.svg" alt="InternAI logo" width="280" />
-</p>
+Canlı ortamda sistemi tarayıcıdan deneyebilirsiniz:
 
-### Proje hakkında
+🔗 **https://internai-fngvr2dgc-feyza.vercel.app**
 
-InternAI, üniversite öğrencileri ve yeni mezunların staj başvuru süreçlerini daha hızlı, bilinçli ve başarılı yönetmelerini sağlayan yapay zekâ destekli bir kariyer platformudur.
+Hesap oluşturup giriş yaptıktan sonra staj keşfi, CV analizi, AI başvuru asistanı, başvuru panosu ve ayarları kullanabilirsiniz.
 
-Geleneksel staj platformları çoğunlukla ilan listelemekle sınırlıyken InternAI; şehir bazlı ilan keşfi, CV analizi, ilan–CV uyumu, ilana özel başvuru metinleri, mülakat hazırlığı ve başvuru takibini tek çalışma alanında birleştirir.
+---
 
-**Slogan:** Doğru stajı bul, yapay zekâ ile daha güçlü başvur.
+## Overview
+
+InternAI, üniversite öğrencileri ve yeni mezunların staj süreçlerini tek bir çalışma alanında yönetmesini sağlar. Klasik ilan listelerinin ötesinde; şehir bazlı keşif, Gemini ile CV analizi, ilana özel başvuru metinleri, başvuru takibi ve kariyer önerilerini bir araya getirir.
+
+| | |
+|---|---|
+| **Problem** | Aynı CV ve ön yazıyla yapılan başvurular düşük uyum üretir; takip dağınık kalır. |
+| **Çözüm** | Keşif → analiz → AI metin → takip → dashboard döngüsü. |
+| **Slogan** | Doğru stajı bul, yapay zekâ ile daha güçlü başvur. |
 
 ### Veri kaynağı (şeffaflık)
 
-MVP’de staj ilanları **temsili demo verisidir**; canlı bir staj API’sinden veya güncel açık pozisyonlardan çekilmez. Amaç keşif, filtre, CV uyumu ve başvuru akışını ürün üzerinde göstermektir.
+MVP’de staj ilanları **temsili demo verisidir**; canlı bir staj API’sinden çekilmez. Amaç ürün akışını göstermektir. Veri erişimi `getInternships()` / `getInternshipById()` üzerinden yapılır ve ileride gerçek API’ye taşınmaya uygundur.
 
-Veri erişimi `web-admin/features/internships/data/internships.ts` içindeki `getInternships()` / `getInternshipById()` üzerinden yapılır; bu katman ileride gerçek bir API entegrasyonuna taşınmaya uygundur.
+---
 
-Marka dosyaları ve tasarım referansı: [docs/branding/README.md](./docs/branding/README.md)
+## ✨ Features
 
-### Problem
+| Feature | Description |
+|---------|-------------|
+| **Authentication** | Firebase Authentication ile kayıt, giriş ve şifre sıfırlama |
+| **Dashboard** | Özet istatistikler, hızlı işlemler ve kariyer çalışma alanı |
+| **Internship Discovery** | Şehir / alan / model filtreleriyle staj kataloğu (demo veri) |
+| **AI Resume Analysis** | PDF’den metin çıkarma, Gemini ile CV–ilan uyumu ve ATS tahmini |
+| **AI Cover Letter Generation** | AI Başvuru Asistanı ile ön yazı, e-posta, mülakat ve motivasyon metinleri |
+| **Applications Board** | Liste + Kanban ile başvuru takibi, not ve timeline |
+| **AI Career Coach** | Mevcut veriden kural tabanlı kişiselleştirilmiş öneriler |
+| **User Profile** | Hesap bilgisi ve kariyer kimliği alanı |
+| **Settings** | Hesap tercihleri ve görünüm ayarları |
+| **Notifications** | Firestore’a kaydedilen bildirim tercihleri (push yok; MVP tercih kaydı) |
+| **Firebase Integration** | Auth + Firestore (bildirim ayarları vb.) |
+| **Gemini AI Integration** | Sunucu tarafı Gemini API (`GEMINI_API_KEY`) |
+| **Responsive Design** | Mobil ve masaüstü uyumlu arayüz |
 
-Öğrenciler aynı CV ve ön yazıyla birçok şirkete başvurmakta; ilan uyumu düşük kaldığı için süreç verimsiz ilerlemektedir. Eksik yetkinlikler başvuru öncesi görünmez; mülakat hazırlığı ve başvuru takibi dağınık kalır.
+> **Not:** Ayrı bir firma / admin paneli (çoklu kullanıcı yönetimi) bu MVP kapsamında yoktur; kullanıcı ayarları ve kişisel çalışma alanı mevcuttur.
 
-### Çözüm
+---
 
-InternAI ile kullanıcılar:
+## 🖼 Demo Screenshots
 
-- Şehir bazlı staj ilanlarını keşfeder
-- CV’sini yapay zekâ ile analiz ettirir
-- İlan–CV uyumunu görür
-- Ön yazı / başvuru e-postası üretir
-- CV iyileştirme ve mülakat hazırlığı alır
-- Başvurularını panoda takip eder
-- Dashboard ve kariyer koçu ile sonraki adımları görür
+### Landing & Auth
 
-### Yapay zekâ özellikleri
+| Landing | Login | Register |
+|:---:|:---:|:---:|
+| ![Landing](./docs/sprint-1/screenshots/landing-page.png) | ![Login](./docs/sprint-1/screenshots/login.png) | ![Register](./docs/sprint-1/screenshots/register.png) |
 
-- **CV analizi:** güçlü yönler, eksikler, ATS tahmini, ilan uyumu
-- **AI Başvuru Asistanı:** ön yazı, e-posta, CV iyileştirme, mülakat, motivasyon
-- **AI Kariyer Koçu:** mevcut veriden kural tabanlı kişiselleştirilmiş öneriler
+### Discovery & Profile
 
-### Hedef kitle
+| Internships | Profile |
+|:---:|:---:|
+| ![Internships](./docs/sprint-1/screenshots/internships.png) | ![Profile](./docs/sprint-1/screenshots/profile.png) |
 
-- Üniversite öğrencileri
-- Yeni mezunlar
-- Zorunlu / gönüllü staj arayanlar
-- Kariyer merkezleri
+### AI Resume & Assistant
 
-### Vizyon
+| Resume Upload | Resume Score | Application Assistant |
+|:---:|:---:|:---:|
+| ![Upload](./docs/sprint-2/screenshots/resume-upload.png) | ![Score](./docs/sprint-2/screenshots/resume-score.png) | ![Assistant](./docs/sprint-2/screenshots/application-assistant.png) |
 
-InternAI’nin amacı yalnızca ilan listelemek değil; öğrencilerin kariyer yolculuğuna yapay zekâ ile rehberlik eden bir ekosistem oluşturmaktır.
+### Applications, Dashboard & Settings
 
-### Gelecekte planlananlar
+| Applications | Final Dashboard | Settings |
+|:---:|:---:|:---:|
+| ![Applications](./docs/sprint-3/screenshots/applications.png) | ![Dashboard](./docs/sprint-3/screenshots/final-dashboard.png) | ![Settings](./docs/sprint-3/screenshots/settings.png) |
+
+Tüm görseller: [docs/screenshots-organization-report.md](./docs/screenshots-organization-report.md)
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+
+### Backend
+
+- Firebase
+- Cloud Firestore
+- Firebase Authentication
+
+### AI
+
+- Google Gemini API (`@google/genai`)
+
+### Deployment
+
+- Vercel
+
+---
+
+## 📁 Project Structure
+
+```text
+YZTA_BOOTCAMP_TAKIM91/
+├── README.md
+├── firebase.json
+├── firestore.rules
+├── .firebaserc
+├── docs/
+│   ├── README.md
+│   ├── branding/                 # Marka kimliği & tasarım referansı
+│   ├── product/                  # Vizyon, backlog, özellikler, takım
+│   ├── sprint-1/                 # Sprint 1 süreç + screenshots/
+│   ├── sprint-2/                 # Sprint 2 süreç + screenshots/
+│   ├── sprint-3/                 # Sprint 3 süreç + screenshots/
+│   ├── duplicates/
+│   ├── needs-review/
+│   └── screenshots-organization-report.md
+└── web-admin/                    # Next.js uygulaması
+    ├── app/                      # App Router (sayfalar, API routes)
+    ├── components/brand/         # BrandLogo
+    ├── features/                 # Domain modülleri
+    │   ├── ai-assistant/
+    │   ├── applications/
+    │   ├── career-coach/
+    │   ├── dashboard/
+    │   ├── internships/
+    │   ├── resume-analysis/
+    │   └── settings/
+    ├── lib/                      # Firebase, AI, routes
+    ├── public/brand/             # SVG logo & favicon
+    ├── .env.example
+    └── package.json
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- npm
+- Firebase projesi (Auth + Firestore)
+- Gemini API anahtarı (CV analizi ve asistan için)
+
+### 1. Clone
+
+```bash
+git clone https://github.com/<your-username>/YZTA_BOOTCAMP_TAKIM91.git
+cd YZTA_BOOTCAMP_TAKIM91
+```
+
+### 2. Install
+
+```bash
+cd web-admin
+npm install
+```
+
+### 3. Environment
+
+```bash
+cp .env.example .env.local
+```
+
+`.env.local` içinde gerekli değişkenleri doldurun. Şablon: [`web-admin/.env.example`](./web-admin/.env.example)
+
+| Değişken | Açıklama |
+|----------|----------|
+| `GEMINI_API_KEY` | Sunucu tarafı Gemini anahtarı |
+| `NEXT_PUBLIC_FIREBASE_*` | Firebase web yapılandırması |
+
+### 4. Run
+
+```bash
+npm run dev
+```
+
+Uygulama varsayılan olarak [http://localhost:3000](http://localhost:3000) adresinde açılır.
+
+### 5. Build (opsiyonel)
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+## 📚 Documentation
+
+| Bölüm | Bağlantı |
+|-------|----------|
+| Dokümantasyon ana sayfa | [docs/README.md](./docs/README.md) |
+| Product Backlog | [docs/product/product-backlog.md](./docs/product/product-backlog.md) |
+| Ürün vizyonu | [docs/product/product-vision.md](./docs/product/product-vision.md) |
+| Ürün özellikleri | [docs/product/product-features.md](./docs/product/product-features.md) |
+| Takım ve roller | [docs/product/team-and-roles.md](./docs/product/team-and-roles.md) |
+| Branding | [docs/branding/README.md](./docs/branding/README.md) |
+| Sprint 1 | [docs/sprint-1/README.md](./docs/sprint-1/README.md) |
+| Sprint 2 | [docs/sprint-2/README.md](./docs/sprint-2/README.md) |
+| Sprint 3 | [docs/sprint-3/README.md](./docs/sprint-3/README.md) |
+
+### Sprint özetleri
+
+| Sprint | Hedef | Özet |
+|--------|-------|------|
+| **Sprint 1** | Altyapı ve temel ürün iskeleti | [README](./docs/sprint-1/README.md) |
+| **Sprint 2** | CV ve başvuru metni süreçleri | [README](./docs/sprint-2/README.md) |
+| **Sprint 3** | Ürün bütünlüğü ve finalizasyon | [README](./docs/sprint-3/README.md) |
+
+---
+
+## 🗺 Roadmap
 
 - GitHub / LinkedIn profil analizi
-- Bulut senkronizasyonu
+- Bulut senkronizasyonu (başvuru / CV geçmişi)
 - Firma paneli ve istatistikler
 - Daha zengin kariyer yol haritası
 - Portföy değerlendirme
 
 ---
 
-## Proje yönetimi
+## 👥 Team
 
-Bu proje **tek kişi** tarafından geliştirilmiştir. Ayrıntı: [Takım ve roller](./docs/product/team-and-roles.md)
+Bu proje **Takım 91** kapsamında geliştirilmiştir.
 
 | Rol | Kişi |
 |-----|------|
@@ -81,43 +259,12 @@ Bu proje **tek kişi** tarafından geliştirilmiştir. Ayrıntı: [Takım ve rol
 | Scrum Master | Feyza Sağman |
 | Developer | Feyza Sağman |
 
-### Sprint dokümantasyonu
+Ayrıntı: [docs/product/team-and-roles.md](./docs/product/team-and-roles.md)
 
-Tüm süreç belgeleri `docs/` klasöründedir:
+---
 
-- [Dokümantasyon ana sayfa](./docs/README.md)
-- [Takım ve roller](./docs/product/team-and-roles.md)
-- [Product Backlog](./docs/product/product-backlog.md)
-- [Ürün vizyonu](./docs/product/product-vision.md)
-- [Ürün özellikleri](./docs/product/product-features.md)
-- [Hedef kitle](./docs/product/target-audience.md)
+## 📝 Notes
 
-### Sprint özetleri (altı Bootcamp bölümü)
+Diğer GitHub reposu: https://github.com/melismert805-ui/YZTA--Team-91
 
-| Sprint | Hedef | Özet |
-|--------|-------|------|
-| **Sprint 1** | Altyapı ve temel ürün iskeleti | [sprint-1/README.md](./docs/sprint-1/README.md) |
-| **Sprint 2** | CV ve başvuru metni süreçleri | [sprint-2/README.md](./docs/sprint-2/README.md) |
-| **Sprint 3** | Ürün bütünlüğü ve finalizasyon | [sprint-3/README.md](./docs/sprint-3/README.md) |
-
-### Sprint bağlantıları
-
-| Sprint | Belgeler |
-|--------|----------|
-| **Sprint 1** | [Dağıtım](./docs/sprint-1/backlog-distribution.md) · [Planning](./docs/sprint-1/sprint-planning.md) · [Backlog](./docs/sprint-1/sprint-backlog.md) · [Daily](./docs/sprint-1/daily-scrum.md) · [Board](./docs/sprint-1/sprint-board-updates.md) · [Status](./docs/sprint-1/product-status.md) · [Review](./docs/sprint-1/sprint-review.md) · [Retro](./docs/sprint-1/sprint-retrospective.md) · [Screenshots](./docs/sprint-1/screenshots/README.md) |
-| **Sprint 2** | [Dağıtım](./docs/sprint-2/backlog-distribution.md) · [Planning](./docs/sprint-2/sprint-planning.md) · [Backlog](./docs/sprint-2/sprint-backlog.md) · [Daily](./docs/sprint-2/daily-scrum.md) · [Board](./docs/sprint-2/sprint-board-updates.md) · [Status](./docs/sprint-2/product-status.md) · [Review](./docs/sprint-2/sprint-review.md) · [Retro](./docs/sprint-2/sprint-retrospective.md) · [Screenshots](./docs/sprint-2/screenshots/README.md) |
-| **Sprint 3** | [Dağıtım](./docs/sprint-3/backlog-distribution.md) · [Planning](./docs/sprint-3/sprint-planning.md) · [Backlog](./docs/sprint-3/sprint-backlog.md) · [Daily](./docs/sprint-3/daily-scrum.md) · [Board](./docs/sprint-3/sprint-board-updates.md) · [Status](./docs/sprint-3/product-status.md) · [Review](./docs/sprint-3/sprint-review.md) · [Retro](./docs/sprint-3/sprint-retrospective.md) · [Screenshots](./docs/sprint-3/screenshots/README.md) |
-
-### Ürün durumu (özet)
-
-MVP sunuma hazırdır: kimlik doğrulama, staj keşfi, CV analizi, AI asistan, başvuru takibi, dashboard ve kariyer koçu tamamlanmıştır. GitHub/LinkedIn analizi ve firma paneli yapılmamıştır. Ekran görüntüleri her sprintin `screenshots/` klasörüne manuel eklenmelidir (klasörde şu an yalnızca dosya listesi vardır).
-
-### Çalıştırma (web)
-
-```bash
-cd web-admin
-npm install
-npm run dev
-```
-
-Ortam değişkeni: `web-admin/.env.local` içinde `GEMINI_API_KEY` (yalnızca sunucu tarafı).
+Ekip arkadaşlarım ile formu doldurduktan sonra iletişim kuramadım; mesajlara dönüş alamadım ve ilgili GitHub reposuna Scrum Master tarafından eklenmediğim için süreci **bu repoda tek başıma** tamamlıyorum.
