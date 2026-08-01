@@ -39,9 +39,21 @@ export interface ResumeExtractionError {
   message: string;
 }
 
+export type ResumeExtractionSuccessResponse = {
+  success: true;
+  data: ResumeExtractionResult;
+};
+
+export type ResumeExtractionErrorResponse = {
+  success: false;
+  error: ResumeExtractionError;
+  details?: string;
+  message?: string;
+};
+
 export type ResumeExtractionResponse =
-  | { success: true; data: ResumeExtractionResult }
-  | { success: false; error: ResumeExtractionError };
+  | ResumeExtractionSuccessResponse
+  | ResumeExtractionErrorResponse;
 
 export interface ResumeContext {
   version: typeof RESUME_CONTEXT_VERSION;

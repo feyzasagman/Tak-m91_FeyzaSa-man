@@ -4,6 +4,7 @@ import { cleanResumeText } from "@/features/resume-analysis/utils/cleanResumeTex
 import { detectResumeSections } from "@/features/resume-analysis/utils/detectResumeSections";
 import type {
   ResumeExtractionErrorCode,
+  ResumeExtractionErrorResponse,
   ResumeExtractionResponse,
 } from "@/features/resume-analysis/types/resumeExtraction";
 import { MAX_RESUME_SIZE_BYTES } from "@/features/resume-analysis/utils/resume-validation";
@@ -33,14 +34,17 @@ function errorResponse(
   headers?: HeadersInit,
   details?: string
 ) {
-  const body: ResumeExtractionResponse & { details?: string } = {
+  const body: ResumeExtractionErrorResponse = {
     success: false,
     error: { code, message },
   };
   if (details && process.env.NODE_ENV !== "production") {
     body.details = details;
   }
-  return NextResponse.json(body, { status, headers });
+  return NextResponse.json<ResumeExtractionResponse>(body, {
+    status,
+    headers,
+  });
 }
 
 function formatError(error: unknown) {

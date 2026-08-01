@@ -1,11 +1,14 @@
 import type {
   ResumeExtractionErrorCode,
+  ResumeExtractionErrorResponse,
   ResumeExtractionResponse,
   ResumeExtractionResult,
   ResumeSections,
 } from "@/features/resume-analysis/types/resumeExtraction";
 
 const EXTRACTION_TIMEOUT_MS = 30_000;
+const SAFE_FALLBACK_MESSAGE =
+  "CV işlenirken bir hata oluştu. Lütfen tekrar deneyin.";
 
 export class ResumeExtractionRequestError extends Error {
   constructor(
@@ -33,17 +36,54 @@ function hasStringSections(value: unknown): value is ResumeSections {
   ].every((key) => typeof sections[key] === "string");
 }
 
+function getOptionalStringField(
+  value: object,
+  key: string
+): string | undefined {
+  if (!(key in value)) return undefined;
+  const field = (value as Record<string, unknown>)[key];
+  return typeof field === "string" ? field : undefined;
+}
+
+function readErrorMessage(error: unknown, fallback?: string): string {
+  if (typeof error === "string" && error.trim()) return error;
+  if (error && typeof error === "object" && "message" in error) {
+    const message = (error as { message: unknown }).message;
+    if (typeof message === "string" && message.trim()) return message;
+  }
+  if (typeof fallback === "string" && fallback.trim()) return fallback;
+  return SAFE_FALLBACK_MESSAGE;
+}
+
+function readErrorCode(error: unknown): ResumeExtractionErrorCode {
+  if (error && typeof error === "object" && "code" in error) {
+    const code = (error as { code: unknown }).code;
+    if (typeof code === "string" && code.trim()) {
+      return code as ResumeExtractionErrorCode;
+    }
+  }
+  return "EXTRACTION_FAILED";
+}
+
 function isExtractionResponse(value: unknown): value is ResumeExtractionResponse {
   if (!value || typeof value !== "object") return false;
   const response = value as Record<string, unknown>;
+
   if (response.success === false) {
-    const error = response.error as Record<string, unknown> | undefined;
-    return Boolean(
-      error &&
-        typeof error.code === "string" &&
-        typeof error.message === "string"
+    if (!response.error || typeof response.error !== "object") return false;
+    const error = response.error as Record<string, unknown>;
+    const detailsOk =
+      !("details" in response) || typeof response.details === "string";
+    const messageOk =
+      !("message" in response) || typeof response.message === "string";
+    return (
+      typeof error.code === "string" &&
+      typeof error.message === "string" &&
+      detailsOk &&
+      messageOk
     );
   }
+
   if (response.success !== true || !response.data || typeof response.data !== "object") {
     return false;
   }
@@ -58,6 +98,18 @@ function isExtractionResponse(value: unknown): value is ResumeExtractionResponse
     typeof data.wordCount === "number" &&
     hasStringSections(data.sections)
   );
+}
+
+function readErrorDetails(payload: ResumeExtractionErrorResponse): string | undefined {
+  if (
+    typeof payload === "object" &&
+    payload !== null &&
+    "details" in payload &&
+    typeof payload.details === "string"
+  ) {
+    return payload.details;
+  }
+  return undefined;
 }
 
 export async function extractResumeText(
@@ -96,7 +148,7 @@ export async function extractResumeText(
         parseError,
       });
       throw new ResumeExtractionRequestError(
-        `Sunucudan geçerli bir yanıt alınamadı. (HTTP ${response.status}, content-type: ${contentType})`,
+        `Sunucudan geçerli bir yanıt alınamadı. (HTTP ${response.status})`,
         "EXTRACTION_FAILED",
         response.status,
         rawBody.slice(0, 300)
@@ -117,21 +169,21 @@ export async function extractResumeText(
     }
 
     if (!payload.success) {
-      const details =
-        typeof (payload as { details?: unknown }).details === "string"
-          ? (payload as { details: string }).details
-          : undefined;
+      const details = readErrorDetails(payload);
+      const topLevelMessage = getOptionalStringField(payload, "message");
+      const errorMessage = readErrorMessage(payload.error, topLevelMessage);
+      const errorCode = readErrorCode(payload.error);
+
       console.error("[extractResumeText] API hata yanıtı", {
         status: response.status,
-        code: payload.error.code,
-        message: payload.error.message,
+        code: errorCode,
+        message: errorMessage,
         details,
       });
+
       throw new ResumeExtractionRequestError(
-        details
-          ? `${payload.error.message} (${details})`
-          : payload.error.message,
-        payload.error.code,
+        errorMessage,
+        errorCode,
         response.status,
         details
       );
@@ -142,7 +194,7 @@ export async function extractResumeText(
         status: response.status,
       });
       throw new ResumeExtractionRequestError(
-        `Beklenmeyen HTTP durumu: ${response.status}`,
+        SAFE_FALLBACK_MESSAGE,
         "EXTRACTION_FAILED",
         response.status
       );
@@ -161,9 +213,7 @@ export async function extractResumeText(
     }
     console.error("[extractResumeText] Bağlantı / beklenmeyen hata", error);
     throw new ResumeExtractionRequestError(
-      error instanceof Error
-        ? `CV işlenirken bir bağlantı hatası oluştu: ${error.message}`
-        : "CV işlenirken bir bağlantı hatası oluştu. Lütfen tekrar deneyin.",
+      SAFE_FALLBACK_MESSAGE,
       "EXTRACTION_FAILED"
     );
   } finally {
