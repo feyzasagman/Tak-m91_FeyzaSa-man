@@ -10,7 +10,9 @@ const EXTRACTION_TIMEOUT_MS = 30_000;
 export class ResumeExtractionRequestError extends Error {
   constructor(
     message: string,
-    public readonly code: ResumeExtractionErrorCode
+    public readonly code: ResumeExtractionErrorCode,
+    public readonly status?: number,
+    public readonly details?: string
   ) {
     super(message);
     this.name = "ResumeExtractionRequestError";
@@ -80,28 +82,72 @@ export async function extractResumeText(
       signal: controller.signal,
     });
 
+    const contentType = response.headers.get("content-type") ?? "(yok)";
+    const rawBody = await response.text();
+
     let payload: unknown;
     try {
-      payload = await response.json();
-    } catch {
+      payload = rawBody ? JSON.parse(rawBody) : null;
+    } catch (parseError) {
+      console.error("[extractResumeText] JSON parse hatası", {
+        status: response.status,
+        contentType,
+        bodyPreview: rawBody.slice(0, 500),
+        parseError,
+      });
       throw new ResumeExtractionRequestError(
-        "Sunucudan geçerli bir yanıt alınamadı.",
-        "EXTRACTION_FAILED"
+        `Sunucudan geçerli bir yanıt alınamadı. (HTTP ${response.status}, content-type: ${contentType})`,
+        "EXTRACTION_FAILED",
+        response.status,
+        rawBody.slice(0, 300)
       );
     }
 
     if (!isExtractionResponse(payload)) {
+      console.error("[extractResumeText] Yanıt şeması geçersiz", {
+        status: response.status,
+        payload,
+      });
       throw new ResumeExtractionRequestError(
-        "CV işleme yanıtı doğrulanamadı. Lütfen tekrar deneyin.",
-        "EXTRACTION_FAILED"
+        `CV işleme yanıtı doğrulanamadı. (HTTP ${response.status})`,
+        "EXTRACTION_FAILED",
+        response.status,
+        rawBody.slice(0, 300)
       );
     }
+
     if (!payload.success) {
+      const details =
+        typeof (payload as { details?: unknown }).details === "string"
+          ? (payload as { details: string }).details
+          : undefined;
+      console.error("[extractResumeText] API hata yanıtı", {
+        status: response.status,
+        code: payload.error.code,
+        message: payload.error.message,
+        details,
+      });
       throw new ResumeExtractionRequestError(
-        payload.error.message,
-        payload.error.code
+        details
+          ? `${payload.error.message} (${details})`
+          : payload.error.message,
+        payload.error.code,
+        response.status,
+        details
       );
     }
+
+    if (!response.ok) {
+      console.error("[extractResumeText] success:true ama HTTP hata", {
+        status: response.status,
+      });
+      throw new ResumeExtractionRequestError(
+        `Beklenmeyen HTTP durumu: ${response.status}`,
+        "EXTRACTION_FAILED",
+        response.status
+      );
+    }
+
     return payload.data;
   } catch (error) {
     if (error instanceof ResumeExtractionRequestError) throw error;
@@ -113,8 +159,11 @@ export async function extractResumeText(
         timedOut ? "TIMEOUT" : "CANCELLED"
       );
     }
+    console.error("[extractResumeText] Bağlantı / beklenmeyen hata", error);
     throw new ResumeExtractionRequestError(
-      "CV işlenirken bir bağlantı hatası oluştu. Lütfen tekrar deneyin.",
+      error instanceof Error
+        ? `CV işlenirken bir bağlantı hatası oluştu: ${error.message}`
+        : "CV işlenirken bir bağlantı hatası oluştu. Lütfen tekrar deneyin.",
       "EXTRACTION_FAILED"
     );
   } finally {
